@@ -20,7 +20,7 @@ class AuthResponseModel {
 
   AuthResponseModel copyWith({
     String? accessToken,
-    String? user,
+    String? tokenType,
   }) =>
       AuthResponseModel(
         accessToken: accessToken ?? this.accessToken,
