@@ -37,10 +37,10 @@ class AppButton extends StatelessWidget {
     this.postIconSpace = 20,
     this.preIconSpace = 20,
     this.textColor,
-    this.height = 48,
+    this.height = 60,
     this.child,
     this.width = double.infinity,
-    this.radius = 12,
+    this.radius = 80,
   })  : assert(label != null || child != null),
         isText = false,
         isOutline = false;
@@ -152,6 +152,7 @@ class AppButton extends StatelessWidget {
                       color: iconColor ?? textColor,
                     ),
                   ],
+                  
                 ],
               )
             : child!,

@@ -75,11 +75,10 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
                 controller: _passwordController,
                 labelText: 'Enter your password',
                 hintText: 'Enter your password',
-                validator: Validator().isPassword().isNotEmpty().validate,
+                // validator: Validator().isPassword().isNotEmpty().validate,
                 errorText: passwordError,
                 keyboardType: TextInputType.visiblePassword,
               ),
-
               CSCPicker(
                 layout: Layout.vertical,
                   flagState: CountryFlag.ENABLE,
@@ -130,21 +129,21 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
               AppButton(
                 onPressed: emailError == null && passwordError == null
                     ? () {
-                        if (!_formKey.currentState!.validate()) return;
+                      if (_formKey.currentState!.validate()) {
+                          ref.read(authProvider.notifier).registerUser(
+                                email: _emailAddressController.text,
+                                password: _passwordController.text,
+                                country: countryValue,
+                                countryState: stateValue,
+                              );
+                        }
+                      }
+                    : () {
+                         if (!_formKey.currentState!.validate()) return;
                         ref.read(authProvider.notifier).addChanges(
                             repo: AuthRepo(
                                 email: _emailAddressController.text,
                                 password: _passwordController.text));
-                      }
-                    : () {
-                        if (_formKey.currentState!.validate()) {
-                          ref.read(authProvider.notifier).registerUser(
-                              email: _emailAddressController.text,
-                              password: _passwordController.text,
-                              country:countryValue,
-                              countryState:stateValue,
-                            );
-                        }
                       },
                 label: 'Create account',
               ),

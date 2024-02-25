@@ -15,7 +15,6 @@ class ImageUploadResponseModel {
 
   ImageUploadResponseModel copyWith({
     String? imageUrl,
-    String? tokenType,
   }) =>
       ImageUploadResponseModel(
         imageUrl: imageUrl ?? this.imageUrl,
@@ -31,3 +30,7 @@ class ImageUploadResponseModel {
 
   //     };
 }
+
+
+//create an instance of the link cloudinary generator
+// it shouldn't even be available publicly

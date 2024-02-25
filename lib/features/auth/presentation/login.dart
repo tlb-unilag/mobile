@@ -35,7 +35,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'New to taro_leaf_blight? ',
+                      text: 'New to taro leaf blight detector? ',
                       style:
                           CustomTextStyle.textsmall14.withColorHex(0xFF17171B),
                     ),
@@ -54,7 +54,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               30.gap,
               AppInput(
                 controller: _emailAddressController,
-                labelText: 'email',
+                labelText: 'Email',
                 hintText: 'Enter your email',
                 validator: Validator().isEmail().isNotEmpty().validate,
                 errorText: emailError,
@@ -63,7 +63,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               20.gap,
               AppInput.password(
                 controller: _passwordController,
-                labelText: 'Enter your password',
+                labelText: 'Password',
                 hintText: 'Enter your password',
                 // validator: Validator().isPassword().isNotEmpty().validate,
                 errorText: passwordError,
@@ -73,16 +73,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               AppButton(
                 onPressed: emailError == null && passwordError == null
                     ? () {
-                      FocusScope.of(context).unfocus();
+                        FocusScope.of(context).unfocus();
                         if (_formKey.currentState!.validate()) {
                           ref.read(authProvider.notifier).loginUser(
                               email: _emailAddressController.text,
                               password: _passwordController.text);
                         }
-                       
                       }
                     : () {
-                         if (!_formKey.currentState!.validate()) return;
+                        if (!_formKey.currentState!.validate()) return;
                         ref.read(authProvider.notifier).addChanges(
                             repo: AuthRepo(
                                 password: _passwordController.text,
@@ -102,5 +101,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
     _passwordController.dispose();
     _emailAddressController.dispose();
+  }
+}
+
+class TestWidget extends ConsumerWidget {
+  const TestWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container();
   }
 }

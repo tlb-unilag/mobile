@@ -1,11 +1,14 @@
+import 'package:intl/intl.dart';
+import 'package:taro_leaf_blight/core/utils/extensions/date_extensions.dart';
+
 class SingleDetectionResponseModel {
   String detectionId;
   String imageUrl;
   int taroLate;
   int taroMid;
   int taroEarly;
-  String userId;
-  DateTime createdAt;
+  String? userId;
+  String createdAt;
 
   SingleDetectionResponseModel({
     required this.detectionId,
@@ -13,7 +16,7 @@ class SingleDetectionResponseModel {
     required this.taroLate,
     required this.taroMid,
     required this.taroEarly,
-    required this.userId,
+    this.userId,
     required this.createdAt,
   });
 
@@ -25,10 +28,11 @@ class SingleDetectionResponseModel {
       taroMid: json['taro_mid'],
       taroEarly: json['taro_early'],
       userId: json['user_id'],
-      createdAt: DateTime.parse(json['created_at']),
+      createdAt: DateFormat('yyyy-MM-dd HH:mm:ss')
+          .format(DateTime.parse(json['created_at'])),
     );
   }
-
+// .format(parsedDateTime);
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['detection_id'] = detectionId;
@@ -37,7 +41,7 @@ class SingleDetectionResponseModel {
     data['taro_mid'] = taroMid;
     data['taro_early'] = taroEarly;
     data['user_id'] = userId;
-    data['created_at'] = createdAt.toIso8601String();
+    data['created_at'] = createdAt;
     return data;
   }
 }

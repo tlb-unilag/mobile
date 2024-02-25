@@ -151,7 +151,8 @@ GestureDetector backButton(BuildContext context) {
       alignment: Alignment.centerLeft,
       child: Icon(
         Icons.arrow_back,
-        size: 20,
+        size: 35,
+        color: Colors.black,
       ),
     ),
   );

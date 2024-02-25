@@ -1,7 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
 import 'package:taro_leaf_blight/features/auth/models/auth_model.dart';
-import 'package:taro_leaf_blight/features/auth/models/validate_model.dart';
 import 'package:taro_leaf_blight/features/home/presentation/home.dart';
 import 'package:taro_leaf_blight/features/onboarding/presentation/onboarding.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
@@ -14,20 +12,17 @@ class AuthNotifier extends Notifier<AuthRepo> {
     return AuthRepo();
   }
 
-  refreshAuth() {
-    state.isLoggedIn = LocalData.token != null;
-    state = state;
-  }
+  // refreshAuth() {
+  //   state.isLoggedIn = LocalData.token != null;
+  //   state = state;
+  // }
 
   logout([BuildContext? context]) {
     LocalData.removeToken();
-    ref.refresh(authProvider);
-    if (context == null) return;
     pushToAndClearStack(const OnboardingScreen());
   }
 
   addChanges({required AuthRepo repo}) {
-    // if (!mounted) return;
     state = state.copyWith(
       email: repo.email,
       password: repo.password,
@@ -42,12 +37,7 @@ class AuthNotifier extends Notifier<AuthRepo> {
     pop();
     if (res.valid) {
       LocalData.setToken(res.data!.accessToken!);
-      // LocalData.setUser(res.data!.data!.user!.id!);
-      // if (res.data?.user?.firstname == null) {
-      // pushTo(const CompleteYourProfleScreen());
-      // } else {
       pushToAndClearStack(const HomeScreen());
-      // }
     } else {
       Dialogs.showErrorSnackbar(message: res.error!.message!);
     }
@@ -66,7 +56,7 @@ class AuthNotifier extends Notifier<AuthRepo> {
         countryState: countryState!);
     pop();
     if (res.valid) {
-      LocalData.setToken(res.data!.token!);
+      LocalData.setToken(res.data!.accessToken!);
       pushToAndClearStack(const HomeScreen());
     } else {
       Dialogs.showErrorSnackbar(message: res.error!.message!);
@@ -119,7 +109,7 @@ class AuthRepo {
     return ResponseModel(
       error: ErrorModel.fromJson(response.data),
       statusCode: statusCode,
-      message: response.data['error']['message'],
+      message: response.data['message'],
     );
   }
 
@@ -147,7 +137,7 @@ class AuthRepo {
         valid: true,
         statusCode: statusCode,
         message: response.statusMessage,
-        data: AuthResponseModel.fromJson(response.data),
+        data: AuthResponseModel.fromJson(response.data), 
       );
     }
 
