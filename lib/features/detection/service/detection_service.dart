@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:taro_leaf_blight/features/detection/models/detection_model.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
@@ -23,7 +22,7 @@ class DetectionService {
       ),
     );
 
-        final int statusCode = response.statusCode ?? 000;
+    final int statusCode = response.statusCode ?? 000;
 
     if (statusCode >= 200 && statusCode <= 300) {
       return ResponseModel<SingleDetectionResponseModel>(
@@ -37,7 +36,7 @@ class DetectionService {
     return ResponseModel(
       error: ErrorModel.fromJson(response.data),
       statusCode: statusCode,
-      message: response.data['error']['message'],
+      message: response.data['message'],
     );
   }
 
@@ -56,15 +55,16 @@ class DetectionService {
         data: SingleDetectionResponseModel.fromJson(response.data),
       );
     }
-
+    print("${response} from dio");
     return ResponseModel(
       error: ErrorModel.fromJson(response.data),
       statusCode: statusCode,
-      message: response.data['error']['message'],
+      message: response.data['message'],
     );
   }
 
   Future<ResponseModel> getAllDetections() async {
+    Future.delayed(const Duration(seconds: 30));
     Response response = await _apiService.runCall(
       _apiService.dio.get('${AppEndpoints.baseUrl}/detection'),
     );
@@ -82,8 +82,8 @@ class DetectionService {
     if (statusCode == 401) {
       // Dialogs.confirmDialog()
       // we need a dialog that has a button
-    // yeah this part will render as an error in the recents body , we will get the message from here and throw it as an execption so we can catch it in the when()
-    // show error snackbar "Your session has expired, login again , click button logs you out,takes you to login screen"
+      // yeah this part will render as an error in the recents body , we will get the message from here and throw it as an execption so we can catch it in the when()
+      // show error snackbar "Your session has expired, login again , click button logs you out,takes you to login screen"
     }
     return ResponseModel(
       error: ErrorModel.fromJson(response.data),
