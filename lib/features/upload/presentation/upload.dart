@@ -70,7 +70,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
                         width: context.screenWidth - 50,
                         height: context.screenHeight - 600,
                         color: AppColors.greyDisabled,
-                        child: const Column(
+                        child:  Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
@@ -79,7 +79,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
                             ),
                             Text(
                               "Upload a photo",
-                              style: CustomTextStyle.labelLBold,
+                              style: CustomTextStyle.textsmall14.withColorHex(0xFF17171B),
                             )
                           ],
                         )),
