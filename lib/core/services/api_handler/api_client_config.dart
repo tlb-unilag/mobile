@@ -109,7 +109,7 @@ class BackendService {
   Dio get dio => _dio;
 
   // Returns the same instance of dio throughout the application
-  BackendService clone() => BackendService(_dio);
+  // BackendService clone() => BackendService(_dio);
 
   dynamic runCall(Future<Response> data) async {
     try {
