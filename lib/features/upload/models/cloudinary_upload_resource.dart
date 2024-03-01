@@ -24,6 +24,16 @@ class CloudinaryUploadResource {
     this.resourceType,
     this.optParams,
     this.progressCallback,
-  }) : assert(filePath != null || fileBytes != null,
+  }) 
+  : assert(filePath != null || fileBytes != null,
             'One of filePath or fileBytes must not be null');
 }
+
+
+// CloudinaryUploadResource(
+//           filePath: file.path,
+//           fileBytes: file.readAsBytesSync(),
+//           resourceType: CloudinaryResourceType.image,
+//           progressCallback: (count, total) {
+//             print('Uploading image from file with progress: $count/$total');
+//             }),

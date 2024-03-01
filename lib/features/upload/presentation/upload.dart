@@ -1,6 +1,6 @@
 import 'package:taro_leaf_blight/features/capture/service/image_picker_service.dart';
 import 'package:taro_leaf_blight/features/upload/providers/cloudinary_url_generator_provider.dart';
-import 'package:taro_leaf_blight/features/upload/service/cloudinary_api_service.dart';
+import 'package:taro_leaf_blight/features/upload/service/cloudinary_api.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
 class UploadScreen extends ConsumerStatefulWidget {
@@ -15,7 +15,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
   dynamic _pickImageError;
   File? file;
   ResponseModel? imageUrl;
-  AsyncValue<dynamic>? urlLink;
+  // AsyncValue<dynamic>? urlLink;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +52,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
                             try {
                               file = await localImagePickerService
                                   .getImage(ImageSource.gallery);
+
                               setState(() {});
                             } catch (e) {
                               setState(() {
@@ -98,8 +99,11 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
                         AppButton(
                           onPressed: () async {
                             try {
-                              file = await localImagePickerService
+                              var fileFromCamera = await localImagePickerService
                                   .getImage(ImageSource.camera);
+                              setState(() {
+                                file = fileFromCamera;
+                              });
                             } catch (e) {
                               setState(() {
                                 _pickImageError = e;
@@ -113,16 +117,19 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
                         AppButton(
                           onPressed: () async {
                             try {
-                              file = await localImagePickerService
-                                  .getImage(ImageSource.gallery);
-                              setState(() {});
+                              var fileFromGallery =
+                                  await localImagePickerService
+                                      .getImage(ImageSource.gallery);
+                              setState(() {
+                                file = fileFromGallery;
+                              });
                             } catch (e) {
                               setState(() {
                                 _pickImageError = e;
                                 print(_pickImageError);
                               });
                             }
-                            pop();
+                            pop(context);
                           },
                           label: "Select from gallery",
                         ),
@@ -130,32 +137,36 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
                     },
                     label: "Select another Image",
                   ),
-        
+
                   10.gap,
                   // this is just here for checking the url sake
                   if (file != null) ...[
                     AppButton(
                         label: "Generate Url",
-                        onPressed: () {
-                          final url = ref.read(generateUrlProvider(file!));
-                          setState(() {
-                            urlLink = url;
-                          });
+                        onPressed: () async {
+                          // ref.watch(generateUrlProvider(file!));
+                          print('this is file:${file}');
+                          var res = await cloudinaryService
+                              .uploadImage(file!)
+                              .then((value) => print(value.data?.url));
+                          // setState(() {
+                          //   urlLink = url;
+                          // });
                         }),
-                    if (urlLink != null)
-                      urlLink!.when(
-                          skipLoadingOnRefresh: false,
-                          data: (data) {
-                            print(data);
-                            return Text(data.data);
-                          },
-                          loading: () {
-                            return const CircularProgressIndicator();
-                          },
-                          error: (error, stackTrace) {
-                            print(error);
-                            return Text(error.toString());
-                          }),
+                    // if (urlLink != null)
+                    //   urlLink!.when(
+                    //       skipLoadingOnRefresh: false,
+                    //       data: (data) {
+                    //         print(data);
+                    //         return Text(data.data);
+                    //       },
+                    //       loading: () {
+                    //         return const CircularProgressIndicator();
+                    //       },
+                    //       error: (error, stackTrace) {
+                    //         print(error);
+                    //         return Text(error.toString());
+                    //       }),
                   ]
                   ////
                 ],

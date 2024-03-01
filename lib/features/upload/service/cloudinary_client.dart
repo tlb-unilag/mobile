@@ -1,10 +1,10 @@
 import 'package:taro_leaf_blight/features/upload/models/cloudinary_resource_type.dart';
 import 'package:taro_leaf_blight/features/upload/models/cloudinary_response.dart';
 import 'package:taro_leaf_blight/features/upload/models/cloudinary_upload_resource.dart';
-import 'package:taro_leaf_blight/features/upload/service/cloudinary_api_service.dart';
+import 'package:taro_leaf_blight/features/upload/service/cloudinary_api.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
-class CloudinaryClient extends CloudinaryApiService {
+class CloudinaryClient extends CloudinaryApi {
   static const _signedRequestAssertMessage = 'This endpoint requires an '
       'authorized request, check the Cloudinary constructor you are using and '
       'make sure you are using a valid `apiKey`, `apiSecret` and `cloudName`.';
@@ -19,14 +19,14 @@ class CloudinaryClient extends CloudinaryApiService {
     required this.apiSecret,
     required this.cloudName,
   }) : super(
-          url: apiUrl,
+          // url: apiUrl,
           apiKey: apiKey,
           apiSecret: apiSecret,
         );
 
   bool get isBasic => apiKey.isEmpty || apiSecret.isEmpty || cloudName.isEmpty;
 
-  Future<ResponseModel<CloudinaryResponseModel>> uploadResource(CloudinaryUploadResource cloudinaryUploadResource, {
+  Future<ResponseModel<CloudinaryResponseModel>> uploadResource({
     String? filePath,
     List<int>? fileBytes,
     String? publicId,

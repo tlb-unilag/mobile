@@ -1,14 +1,15 @@
 import 'package:taro_leaf_blight/packages/packages.dart';
 
-class CloudinaryApiService {
+class CloudinaryApi {
   final BackendService apiService;
-   final String apiUrl;
+  //  final String apiUrl;
 
-   CloudinaryApiService ({String? url, String? apiKey, String? apiSecret})
-      : apiUrl = (url?.isEmpty ?? true) ? url = AppEndpoints.cloudinaryUrl : url!,
+   CloudinaryApi ({String? apiKey, String? apiSecret}): 
+  //  CloudinaryApi ({String? url, String? apiKey, String? apiSecret}): 
+      // : apiUrl = (url?.isEmpty ?? true) ? url = AppEndpoints.cloudinaryUrl : url!,
         apiService = BackendService(Dio(
           BaseOptions(
-          baseUrl: '$url/',
+          baseUrl: AppEndpoints.cloudinaryUrl,
         )
         ));
 
@@ -29,4 +30,4 @@ class CloudinaryApiService {
         onReceiveProgress: onReceiveProgress);
 }
 
-final urlGenService = CloudinaryApiService();
+final urlGenService = CloudinaryApi();

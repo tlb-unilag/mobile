@@ -1,40 +1,58 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:taro_leaf_blight/core/utils/string_exception.dart';
-import 'package:taro_leaf_blight/features/detection/provider/detection_provider.dart';
 import 'package:taro_leaf_blight/features/upload/models/cloudinary_resource_type.dart';
+import 'package:taro_leaf_blight/features/upload/models/cloudinary_response.dart';
 import 'package:taro_leaf_blight/features/upload/models/cloudinary_upload_resource.dart';
-import 'package:taro_leaf_blight/features/upload/service/cloudinary_api_service.dart';
 import 'package:taro_leaf_blight/features/upload/service/cloudinary_client.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
-final generateUrlProvider =
-    FutureProvider.family.autoDispose((ref, File file) async {
-  var res = cloudinaryClient.uploadResource(CloudinaryUploadResource(
+class CloudinaryApiService {
+  Future<ResponseModel<CloudinaryResponseModel>> uploadImage(File file) async {
+    print('${file.path} this is file path');
+    print(' this is file reading${file.readAsBytesSync()} ');
+    var res = await cloudinaryClient.uploadResource(
       filePath: file.path,
       fileBytes: file.readAsBytesSync(),
       resourceType: CloudinaryResourceType.image,
-      progressCallback: (count, total) {
-        print(
-          'Uploading image from file with progress: $count/$total');
-        })
-      );
-  // if (!res.valid) {
-  //   throw StringException(res.message ?? 'Something went wrong');
-  // }
-  // it doesn't throw an error , its just in the loading state
+      progressCallback: 
+      (count, total) {
+        print('Uploading image from file with progress: $count/$total');
+      },
+    );
+    print("hello world");
+    if (res.valid) {
+      print('${res.data?.url} this is where res is from');
+    }
+    if (!res.valid) {
+      throw StringException(res.message ?? 'Something went wrong');
+    }
+    return res;
+  }
+}
 
-  // why do i see all this after the error has been thrown ?
+var cloudinaryService = CloudinaryApiService();
 
-  // its like the error already happens before the exception is thrown
+// final generateUrlProvider =
+//     FutureProvider.family.autoDispose((ref, File file) async {
+  
 
-  print('${res} this is where res is from');
-  // if (!res.valid) {
-  //   // we can see , that the !res.valid but it is still stuck in the loading state ,
-  //   print("-----------------yes yes yes an error occurred-------------------");
-  //   throw StringException(res.message ?? 'Something went wrong');
-  // }
-  return res;
-});
+//   // it doesn't throw an error , its just in the loading state
+
+//   // why do i see all this after the error has been thrown ?
+
+//   // its like the error already happens before the exception is thrown
+
+//   // if (!res.valid) {
+//   //   // we can see , that the !res.valid but it is still stuck in the loading state ,
+//   //   print("-----------------yes yes yes an error occurred-------------------");
+//   //   throw StringException(res.message ?? 'Something went wrong');
+//   // }
+//   return res;
+// });
+
+
+
+
 
 // the urlGenService will not actually be exposed externally , we would just have its value
 // gotten from this provider when an image is picked, then passed to it to generate the url
