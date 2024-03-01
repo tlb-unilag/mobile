@@ -7,6 +7,7 @@ import 'package:taro_leaf_blight/features/detection/provider/detection_provider.
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
 import 'package:taro_leaf_blight/features/info/presentation/info.dart';
 import 'package:taro_leaf_blight/features/recents/presentation/view_all.dart';
+import 'package:taro_leaf_blight/features/upload/presentation/upload.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
 class RecentsScreen extends ConsumerWidget {
@@ -19,17 +20,6 @@ class RecentsScreen extends ConsumerWidget {
       onRefresh: () => ref.refresh(getAllDetectionsProvider.future),
       child: CustomScrollView(
         slivers: [
-          const SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Icon(
-                  Icons.keyboard_double_arrow_down_rounded,
-                  color: Colors.white,
-                  size: 14,
-                ),
-              ],
-            ),
-          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16).copyWith(top: 85),
@@ -76,12 +66,12 @@ class RecentsScreen extends ConsumerWidget {
                           children: [
                             Column(
                               children: [
-                              Container(
+                                Container(
                                   height: 290.h,
                                   width: 370.w,
                                   color: Colors.white,
                                 ),
-                                 const Text(
+                                const Text(
                                     "This is the mock text for the skeletonizer date")
                               ],
                             ),
@@ -93,18 +83,19 @@ class RecentsScreen extends ConsumerWidget {
                                   width: 370.w,
                                   color: Colors.white,
                                 ),
-                                const Text("This is the mock text for the skeletonizer date")
+                                const Text(
+                                    "This is the mock text for the skeletonizer date")
                               ],
                             ),
                             20.gap,
-                           Column(
+                            Column(
                               children: [
                                 Container(
                                   height: 290.h,
                                   width: 370.w,
                                   color: Colors.white,
                                 ),
-                                 const Text(
+                                const Text(
                                     "This is the mock text for the skeletonizer date")
                               ],
                             ),
@@ -151,12 +142,6 @@ class _DetectionInfoWidgetState extends State<DetectionInfoWidget>
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
@@ -164,14 +149,16 @@ class _DetectionInfoWidgetState extends State<DetectionInfoWidget>
           detectionId: widget.detectionInfo.detectionId,
         ));
       },
-      child: Column(
-        children: [
+      child: Column(children: [
         Container(
           width: 370.w,
           height: 290.h,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(30.0)),
-          ),
+          decoration:ShapeDecoration(
+          color: Colors.white,
+          shape: RoundedRectangleBorder (
+                borderRadius: BorderRadius.circular(32.0)
+            )
+        ),
           child: ExtendedImage.network(
             fit: BoxFit.cover,
             clipBehavior: Clip.antiAlias,
