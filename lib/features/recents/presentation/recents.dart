@@ -65,6 +65,7 @@ class RecentsScreen extends ConsumerWidget {
                         child: Column(
                           children: [
                             Column(
+crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   height: 290.h,
@@ -72,11 +73,12 @@ class RecentsScreen extends ConsumerWidget {
                                   color: Colors.white,
                                 ),
                                 const Text(
-                                    "This is the mock text for the skeletonizer date")
+                                    "This is the mock text for the skeleton")
                               ],
                             ),
                             20.gap,
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   height: 290.h,
@@ -84,7 +86,7 @@ class RecentsScreen extends ConsumerWidget {
                                   color: Colors.white,
                                 ),
                                 const Text(
-                                    "This is the mock text for the skeletonizer date")
+                                    "This is the mock text for the skeleton")
                               ],
                             ),
                             20.gap,
@@ -108,7 +110,7 @@ class RecentsScreen extends ConsumerWidget {
                       return ErrorScreen(
                           error: error,
                           onPressed: () {
-                            ref.refresh(getAllDetectionsProvider.future);
+                            ref.invalidate(getAllDetectionsProvider);
                           });
                     },
                   )
@@ -132,14 +134,6 @@ class DetectionInfoWidget extends StatefulWidget {
 
 class _DetectionInfoWidgetState extends State<DetectionInfoWidget>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +143,8 @@ class _DetectionInfoWidgetState extends State<DetectionInfoWidget>
           detectionId: widget.detectionInfo.detectionId,
         ));
       },
-      child: Column(children: [
+      child: Column(
+        children: [
         Container(
           width: 370.w,
           height: 290.h,
@@ -209,9 +204,18 @@ class _DetectionInfoWidgetState extends State<DetectionInfoWidget>
             // }
           ),
         ),
-        const Text(
-          'Date captured: 31 January 2024',
-          style: CustomTextStyle.labelMedium,
+         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'Date captured: ',
+               style: CustomTextStyle.labelLXBold
+            ),
+             Text(
+              '31 January 2024',
+              style: CustomTextStyle.textsmall14.withColorHex(0xFF17171B),
+            ),
+          ],
         ),
         20.gap
       ]),
