@@ -81,7 +81,7 @@ class CloudinaryResponseModel {
         result = map['result'] ?? 'ok',
         deleted = map['deleted'] ?? {},
         partial = map['partial'] ?? false,
-        error = map['error'];
+        error = map['error'] ?? '';
 
   // CloudinaryResponseModel.fromError(this.error);
 
