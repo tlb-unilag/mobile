@@ -3,16 +3,37 @@
 
 import 'package:taro_leaf_blight/packages/packages.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:taro_leaf_blight/widgets/dialog_parameters_widget.dart';
 
 class Dialogs {
-  static void showLoadingDialog() {
+ static void showLoadingDialog({Widget? child}) {
     showDialog(
       context: NavigationService.navigatorKey.currentState!.context,
       barrierDismissible: kDebugMode,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      builder: (context) {
+        if (child == null) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return Material(
+            color: Colors.transparent,
+            child: Center(
+              child: child
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  static void showAlertDialog(DialogParameters parameters) {
+    showDialog(
+      context: NavigationService.navigatorKey.currentState!.context,
+      barrierDismissible: kDebugMode,
+      builder: (context) {
+        return parameters;
+      },
     );
   }
 
