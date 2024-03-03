@@ -3,6 +3,7 @@ import 'package:taro_leaf_blight/features/capture/presentation/capture.dart';
 import 'package:taro_leaf_blight/features/home/provider/current_index_provider.dart';
 import 'package:taro_leaf_blight/features/profile/presentation/profile.dart';
 import 'package:taro_leaf_blight/features/recents/presentation/recents.dart';
+import 'package:taro_leaf_blight/features/upload/presentation/upload.dart';
 import 'package:taro_leaf_blight/main.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
@@ -17,7 +18,7 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       body: [
         const RecentsScreen(),
-        const CaptureScreen(),
+        const UploadScreen(),
         const ProfileScreen(),
       ][currentPageIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -33,8 +34,8 @@ class HomeScreen extends ConsumerWidget {
             label: AppStrings.home,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.camera_rounded),
-            label: AppStrings.capture,
+            icon: Icon(Icons.file_upload_outlined),
+            label: AppStrings.upload,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

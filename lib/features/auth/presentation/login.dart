@@ -18,6 +18,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: Form(
         key: _formKey,
@@ -101,14 +102,5 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
     _passwordController.dispose();
     _emailAddressController.dispose();
-  }
-}
-
-class TestWidget extends ConsumerWidget {
-  const TestWidget({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
   }
 }

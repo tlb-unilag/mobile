@@ -1,26 +1,23 @@
-import 'package:cloudinary_flutter/cloudinary_context.dart';
-import 'package:cloudinary_flutter/cloudinary_object.dart';
 import 'package:camera/camera.dart';
 import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
 import 'package:taro_leaf_blight/features/info/presentation/info.dart';
-import 'core/utils/constants/credentials.dart';
+import 'package:taro_leaf_blight/widgets/dialog_parameters_widget.dart';
 import 'features/home/presentation/auth_start.dart';
 import 'features/home/presentation/home.dart';
-import 'features/recents/presentation/recents.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 import 'widgets/camera_box_squircle_painter.dart';
-
 
 // var cloudinary = Cloudinary.fromStringUrl('cloudinary://${ApiCredentials.CL_API_KEY}:${ApiCredentials.CL_SECRET}@${ApiCredentials.CL_NAME}');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //apparently i only need it for server side applications 
+  //apparently i only need it for server side applications
   await LocalData.init();
-  // cloudinary.config.urlConfig.secure = true;
-  Cloudinary cloudinary = Cloudinary.fromCloudName(cloudName: ApiCredentials.CL_NAME);
+
+  await dotenv.load();
+
   cameras = await availableCameras();
-  print(cameras.length);
+
   runApp(
     const ProviderScope(child: MyApp()),
   );
@@ -99,6 +96,7 @@ class MyApp extends StatelessWidget {
                     space: 1,
                   ),
                   navigationRailTheme: NavigationRailThemeData(
+                    selectedLabelTextStyle: CustomTextStyle.labelLBold,
                     backgroundColor: AppColors.primary,
                     useIndicator: false,
                     indicatorColor: AppColors.primary200,
@@ -119,7 +117,7 @@ class MyApp extends StatelessWidget {
                   ),
                   tabBarTheme: TabBarTheme(
                     labelColor: Colors.black,
-                    labelStyle: CustomTextStyle.textxSmall12.w500,
+                    labelStyle: CustomTextStyle.labelMedium,
                     unselectedLabelStyle: CustomTextStyle.textxSmall12.w500,
                     unselectedLabelColor: Colors.black,
                     indicatorColor: Colors.black,
@@ -216,7 +214,7 @@ class TokenRouter extends StatelessWidget {
   }
 }
 
-// the capture screen is here because of the camera widget
+// the capture screen is here because of the camera widget, we have to find a way to remove it from here or pass it as a param somwhow
 
 late List<CameraDescription> cameras;
 
@@ -247,16 +245,10 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: const Text(
-              'Taro Leaf Blight',
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
             collapsedHeight: 300,
             pinned: true,
             elevation: 0,
-            backgroundColor: Colors.grey[900],
+            // backgroundColor: Colors.grey[900],
             expandedHeight: WindowSize.height(context) -
                 MediaQuery.paddingOf(context).bottom -
                 150,
@@ -270,10 +262,16 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
                       if (e is CameraException) {
                         switch (e.code) {
                           case 'CameraAccessDenied':
-                            // Handle access errors here.
+                            Dialogs.showAlertDialog(DialogParameters(
+                                contentText:
+                                    'You have denied camera access, this app needs permission to access the camera or go to the Settings to enable camera access',
+                                enableButtonText: 'Ok'));
                             break;
                           default:
-                            // Handle other errors here.
+                            Dialogs.showAlertDialog(DialogParameters(
+                                contentText:
+                                    'Sorry, Unknown Error occurred , please try again later',
+                                enableButtonText: 'Ok'));
                             break;
                         }
                       }
@@ -306,12 +304,27 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
                   alignment: Alignment.bottomCenter,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8).copyWith(
-                      bottom: 50,
+                      bottom: 30,
                     ),
                     child: GestureDetector(
-                      onTap: () {
-                        // pushTo(const DetectionInfoScreen());
-                        // if (!isRecording) takePhoto(context);
+                      onTap: () async {
+                        try {
+                          final image = await _cameraController.takePicture();
+                          print(image.path);
+                          if (!context.mounted) return;
+                          // await Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) => DisplayPictureScreen(
+                          //       // Pass the automatically generated path to
+                          //       // the DisplayPictureScreen widget.
+                          //       imagePath: image.path,
+                          //     ),
+                          //   ),
+                          // );
+                        } catch (e) {
+                          Dialogs.confirmDialog(subtitle: e.toString());
+                          print(e);
+                        }
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -348,21 +361,10 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
   }
 }
 
-
-
-
 // recents page - welcome (slice string)
 
 //  handle upload of detection images and errors , etc
 
-// camera page - add select from gallery feature and by the left it has helpful tips to capture good images
-
-// profile page - check it designs from installled apps
-
-// integrate cloudinary url gen and error handling
-
 // error handlinggg
 
-//done this week
-
-// this stupid postman mock api will accept anything, okay , lol
+// remove capture page , and its files and put it in another project 

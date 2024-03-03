@@ -28,6 +28,7 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: Form(
         key: _formKey,
@@ -101,11 +102,11 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
                     fontSize: 14,
                   ),
                   dropdownHeadingStyle: const TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 17,
                       fontWeight: FontWeight.bold),
                   dropdownItemStyle: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 14,
                   ),
 
@@ -154,3 +155,6 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
     );
   }
 }
+
+
+

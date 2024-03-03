@@ -5,7 +5,8 @@ class AppStrings {
   static const taroleafblight = 'Taro Leaf Blight Detector';
   static const taroleafblightdesc =
       'Detect taro leaf blight in your plants easily with our app';
-  static const home = 'home';
-  static const capture = 'capture';
-  static const profile = 'profile';
+  static const home = 'Home';
+  static const capture = 'Capture';
+  static const profile = 'Profile';
+  static const upload = 'Upload';
 }
