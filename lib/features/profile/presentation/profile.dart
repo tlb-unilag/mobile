@@ -1,20 +1,36 @@
-
+import 'package:taro_leaf_blight/features/auth/providers/auth_provider.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
-class ProfileScreen extends ConsumerStatefulWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Placeholder(
-      child: Center(child: Text("i am profile")),
+  Widget build(BuildContext context, WidgetRef ref) {
+    var auth = ref.read(authProvider.notifier);
+    return Container(
+      height: WindowSize.height(context),
+      child: Center(
+        child: Column(
+           mainAxisAlignment: MainAxisAlignment.center, // Add this line
+          children: [
+            CircleAvatar(
+              radius: 60,
+              backgroundColor: AppColors.greyDisabled,
+            ),
+            30.gap,
+            AppButton(
+              label: 'Logout',
+              onPressed: () {
+                auth.logout(context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Icon(Icons.logout), Text('Logout')],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
-
