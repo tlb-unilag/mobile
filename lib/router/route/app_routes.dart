@@ -148,9 +148,9 @@ GestureDetector backButton(BuildContext context) {
       pop(context);
     },
     child: const Align(
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.center,
       child: Icon(
-        Icons.arrow_back,
+        Icons.arrow_back_ios_new_sharp,
         size: 35,
         color: Colors.black,
       ),
