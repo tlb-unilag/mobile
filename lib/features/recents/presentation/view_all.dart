@@ -1,7 +1,6 @@
 import 'package:taro_leaf_blight/features/detection/provider/detection_provider.dart';
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
 import 'package:taro_leaf_blight/features/recents/presentation/recents.dart';
-import 'package:taro_leaf_blight/packages/global_packages.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
 class ViewAllScreen extends ConsumerWidget {
@@ -11,18 +10,14 @@ class ViewAllScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var detections = ref.watch(getAllDetectionsProvider);
     return Scaffold(
-      appBar: AppBar(
-          leading: const BackButton(
-            color: Colors.black,
-          ),
-      ),
+      appBar: AppBar(leading:  backButton(context)),
       body: RefreshIndicator.adaptive(
         onRefresh: () => ref.refresh(getAllDetectionsProvider.future),
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.all(16).copyWith(top: 15),
+                padding: const EdgeInsets.all(16).copyWith(top:0),
                 child: Column(
                   children: [
                     12.gap,
@@ -34,7 +29,8 @@ class ViewAllScreen extends ConsumerWidget {
                             children: data.data.detections
                                 .take(2)
                                 .map<Widget>((detectionInfo) {
-                          return DetectionInfoWidget(detectionInfo: detectionInfo);
+                          return DetectionInfoWidget(
+                              detectionInfo: detectionInfo);
                         }).toList());
                       },
                       loading: () {
