@@ -12,7 +12,7 @@ class DetectionService {
     return DetectionService(imageUrl: imageUrl ?? this.imageUrl);
   }
 
-  Future<ResponseModel> detectOneImage({
+  Future<ResponseModel<SingleDetectionResponseModel>> detectOneImage({
     required String? imageUrl,
   }) async {
     Response response = await _apiService.runCall(
@@ -40,7 +40,7 @@ class DetectionService {
     );
   }
 
-  Future<ResponseModel> getDetectionById({required String? detectionId}) async {
+  Future<ResponseModel<SingleDetectionResponseModel>> getDetectionById({required String? detectionId}) async {
     Response response = await _apiService.runCall(
       _apiService.dio.get('${AppEndpoints.baseUrl}/detection/$detectionId'),
     );
@@ -55,7 +55,6 @@ class DetectionService {
         data: SingleDetectionResponseModel.fromJson(response.data),
       );
     }
-    print("${response} from dio");
     return ResponseModel(
       error: ErrorModel.fromJson(response.data),
       statusCode: statusCode,
@@ -63,8 +62,7 @@ class DetectionService {
     );
   }
 
-  Future<ResponseModel> getAllDetections() async {
-    Future.delayed(const Duration(seconds: 30));
+  Future<ResponseModel<MultipleDetectionResponseModel>> getAllDetections() async {
     Response response = await _apiService.runCall(
       _apiService.dio.get('${AppEndpoints.baseUrl}/detection'),
     );
@@ -81,7 +79,7 @@ class DetectionService {
     }
     if (statusCode == 401) {
       // Dialogs.confirmDialog()
-      // we need a dialog that has a button
+      // we need an removable dialog that has a button
       // yeah this part will render as an error in the recents body , we will get the message from here and throw it as an execption so we can catch it in the when()
       // show error snackbar "Your session has expired, login again , click button logs you out,takes you to login screen"
     }
