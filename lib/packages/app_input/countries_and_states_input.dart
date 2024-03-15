@@ -1,11 +1,8 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert';
-import 'package:flutter/material.dart';
 import '../packages.dart';
-import 'countries_and_states_model.dart';
-import 'dropdown_with_search.dart';
 
 enum Layout { vertical, horizontal }
 
@@ -612,7 +609,9 @@ class CSCPickerState extends State<CSCPicker> {
 
   void _setDefaultCountry() {
     if (widget.defaultCountry != null) {
-      print(_country[Countries[widget.defaultCountry]!]);
+      if (kDebugMode) {
+        print(_country[Countries[widget.defaultCountry]!]);
+      }
       _onSelectedCountry(_country[Countries[widget.defaultCountry]!]!);
     }
   }
@@ -677,8 +676,8 @@ class CSCPickerState extends State<CSCPicker> {
             
     var statesFromTakeState = takeState as List;
 
-    statesFromTakeState.forEach((f) {
-      if (!mounted) return;
+    for (var f in statesFromTakeState) {
+      if (!mounted) continue;
       setState(() {
         var name = f.map((item) => item.name).toList();
         for (var stateName in name) {
@@ -686,7 +685,7 @@ class CSCPickerState extends State<CSCPicker> {
           _states.add(stateName.toString());
         }
       });
-    });
+    }
     _states.sort((a, b) => a!.compareTo(b!));
     return _states;
   }
@@ -704,7 +703,6 @@ class CSCPickerState extends State<CSCPicker> {
       } else {
         widget.onCountryChanged!(value);
       }
-      //code added in if condition
       if (value != _selectedCountry) {
         _states.clear();
         _selectedState = widget.stateDropdownLabel;
@@ -721,7 +719,6 @@ class CSCPickerState extends State<CSCPicker> {
     if (!mounted) return;
     setState(() {
       widget.onStateChanged!(value);
-      //code added in if condition
       if (value != _selectedState) {
         _selectedState = value;
       }
@@ -844,10 +841,10 @@ class CSCPickerState extends State<CSCPicker> {
         return dropDownStringItem;
       }).toList(),
       selected: _selectedCountry ?? widget.countryDropdownLabel,
-      //selected: _selectedCountry != null ? _selectedCountry : "Country",
-      //onChanged: (value) => _onSelectedCountry(value),
       onChanged: (value) {
-        print("countryChanged $value $_selectedCountry");
+        if (kDebugMode) {
+          print("countryChanged $value $_selectedCountry");
+        }
         if (value != null) {
           _onSelectedCountry(value);
         }
@@ -873,13 +870,10 @@ class CSCPickerState extends State<CSCPicker> {
       disabledDecoration: widget.disabledDropdownDecoration,
       selected: _selectedState,
       label: widget.stateSearchPlaceholder,
-      //onChanged: (value) => _onSelectedState(value),
       onChanged: (value) {
-        //print("stateChanged $value $_selectedState");
-        // value != null
-        //     ? _onSelectedState(value)
-        //     : _onSelectedState(_selectedState);
-        print("stateChanged $value $_selectedState");
+        if (kDebugMode) {
+          print("stateChanged $value $_selectedState");
+        }
         if (value != null) {
           _onSelectedState(value);
         }

@@ -13,17 +13,19 @@ class ProfileScreen extends ConsumerWidget {
         child: Column(
            mainAxisAlignment: MainAxisAlignment.center, // Add this line
           children: [
-            CircleAvatar(
+             CircleAvatar(
               radius: 60,
-              backgroundColor: AppColors.greyDisabled,
+              backgroundColor: AppColors.baseWhite,
+              child: SvgPicture.asset('assets/images/profile.svg'),
             ),
             30.gap,
             AppButton(
+              width: 200.w,
               label: 'Logout',
               onPressed: () {
                 auth.logout(context);
               },
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [Icon(Icons.logout), Text('Logout')],
               ),

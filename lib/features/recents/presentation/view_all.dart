@@ -2,6 +2,8 @@ import 'package:taro_leaf_blight/features/detection/provider/detection_provider.
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
 import 'package:taro_leaf_blight/features/recents/presentation/recents.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
+import 'package:taro_leaf_blight/widgets/mock_data_widget.dart';
+import 'package:taro_leaf_blight/widgets/nodetections.dart';
 
 class ViewAllScreen extends ConsumerWidget {
   const ViewAllScreen({super.key});
@@ -10,68 +12,41 @@ class ViewAllScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var detections = ref.watch(getAllDetectionsProvider);
     return Scaffold(
-      appBar: AppBar(leading:  backButton(context)),
+      appBar: AppBar(leading: backButton(context)),
       body: RefreshIndicator.adaptive(
         onRefresh: () => ref.refresh(getAllDetectionsProvider.future),
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.all(16).copyWith(top:0),
+                padding: const EdgeInsets.all(16).copyWith(top: 0),
                 child: Column(
                   children: [
                     12.gap,
-                    // pul to refresh , show skeletonizer
                     detections.when(
                       skipLoadingOnRefresh: false,
                       data: (data) {
-                        return Column(
-                            children: data.data.detections
-                                .take(2)
-                                .map<Widget>((detectionInfo) {
-                          return DetectionInfoWidget(
-                              detectionInfo: detectionInfo);
-                        }).toList());
+                        if (data.data!.detections.isNotEmpty) {
+                          return Column(
+                              children: data.data!.detections
+                                  .take(2)
+                                  .map<Widget>((detectionInfo) {
+                            return DetectionInfoWidget(
+                                detectionInfo: detectionInfo);
+                          }).toList());
+                        } else {
+                          return NoDetections();
+                        }
                       },
                       loading: () {
                         return Skeletonizer(
                           child: Column(
                             children: [
-                              Column(
-                                children: [
-                                  Container(
-                                    height: 290.h,
-                                    width: 370.w,
-                                    color: Colors.white,
-                                  ),
-                                  const Text(
-                                      "This is the mock text for the skeletonizer date")
-                                ],
-                              ),
+                              const MockDataWidget(),
                               20.gap,
-                              Column(
-                                children: [
-                                  Container(
-                                    height: 290.h,
-                                    width: 370.w,
-                                    color: Colors.white,
-                                  ),
-                                  const Text(
-                                      "This is the mock text for the skeletonizer date")
-                                ],
-                              ),
+                              const MockDataWidget(),
                               20.gap,
-                              Column(
-                                children: [
-                                  Container(
-                                    height: 290.h,
-                                    width: 370.w,
-                                    color: Colors.white,
-                                  ),
-                                  const Text(
-                                      "This is the mock text for the skeletonizer date")
-                                ],
-                              ),
+                              const MockDataWidget(),
                               20.gap,
                             ],
                           ),

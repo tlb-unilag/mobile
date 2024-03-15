@@ -28,4 +28,12 @@ class LocalData {
   static bool get isOnboarded {
     return prefs.getBool('isOnboarded') ?? false;
   }
+
+  static Future<void> setIsFilePresent(bool isOnboarded) async {
+    await prefs.setBool('isOnboarded', isOnboarded);
+  }
+
+  static bool get isFilePresent {
+    return prefs.getBool('isFilePresent') ?? false;
+  }
 }

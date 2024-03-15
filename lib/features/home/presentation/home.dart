@@ -1,5 +1,4 @@
 import 'package:taro_leaf_blight/core/utils/constants/strings.dart';
-import 'package:taro_leaf_blight/features/capture/presentation/capture.dart';
 import 'package:taro_leaf_blight/features/home/provider/current_index_provider.dart';
 import 'package:taro_leaf_blight/features/profile/presentation/profile.dart';
 import 'package:taro_leaf_blight/features/recents/presentation/recents.dart';
@@ -22,12 +21,23 @@ class HomeScreen extends ConsumerWidget {
         const ProfileScreen(),
       ][currentPageIndex],
       bottomNavigationBar: BottomNavigationBar(
+        selectedIconTheme: const IconThemeData(
+          color: AppColors.primary
+        ),
         currentIndex: currentPageIndex,
+                selectedItemColor: AppColors.primary,
         onTap: (newIndex) =>
             ref.read(homeCurrentPageIndexProvider.notifier).state = newIndex,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: const TextStyle(fontSize: 12),
+        unselectedLabelStyle:const TextStyle(
+          fontSize: 14,
+          color: AppColors.baseBlack
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontSize: 16,
+          color: AppColors.baseBlack
+        ),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -35,7 +45,7 @@ class HomeScreen extends ConsumerWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.file_upload_outlined),
-            label: AppStrings.upload,
+            label: AppStrings.detect,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
@@ -46,3 +56,5 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 }
+
+

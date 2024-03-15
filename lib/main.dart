@@ -1,22 +1,16 @@
 import 'package:camera/camera.dart';
 import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
-import 'package:taro_leaf_blight/features/info/presentation/info.dart';
 import 'package:taro_leaf_blight/widgets/dialog_parameters_widget.dart';
 import 'features/home/presentation/auth_start.dart';
 import 'features/home/presentation/home.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
-import 'widgets/camera_box_squircle_painter.dart';
-
-// var cloudinary = Cloudinary.fromStringUrl('cloudinary://${ApiCredentials.CL_API_KEY}:${ApiCredentials.CL_SECRET}@${ApiCredentials.CL_NAME}');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //apparently i only need it for server side applications
+
   await LocalData.init();
 
   await dotenv.load();
-
-  cameras = await availableCameras();
 
   runApp(
     const ProviderScope(child: MyApp()),
@@ -46,7 +40,7 @@ class MyApp extends StatelessWidget {
                 //home: const WidgetLibrary(),
                 theme: ThemeData(
                   primarySwatch: MaterialColor(
-                    AppColors.primary500.value,
+                    AppColors.primary.value,
                     const <int, Color>{
                       25: AppColors.primary50,
                       50: AppColors.primary50,
@@ -65,6 +59,10 @@ class MyApp extends StatelessWidget {
                   brightness: Brightness.light,
                   // scaffoldBackgroundColor: Colors.grey[900],
                   scaffoldBackgroundColor: Colors.white,
+                  bottomAppBarTheme: const BottomAppBarTheme(
+                    
+                    color: AppColors.primary,
+                  ),
                   appBarTheme: AppBarTheme(
                     titleTextStyle:
                         CustomTextStyle.labelXLBold.withColor(Colors.white),
@@ -205,7 +203,6 @@ class TokenRouter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return const AuthStart();
     if (LocalData.token != null) {
       return const HomeScreen();
     } else {
@@ -214,157 +211,9 @@ class TokenRouter extends StatelessWidget {
   }
 }
 
-// the capture screen is here because of the camera widget, we have to find a way to remove it from here or pass it as a param somwhow
-
-late List<CameraDescription> cameras;
-
-class CaptureScreen extends ConsumerStatefulWidget {
-  const CaptureScreen({super.key});
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CaptureScreenState();
-}
-
-class _CaptureScreenState extends ConsumerState<CaptureScreen> {
-  late CameraController _cameraController;
-  late Future<void> _cameraValue;
-  bool isFlashOn = false;
-  bool isCameraFront = true;
-  bool isRecording = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _cameraController = CameraController(cameras[0], ResolutionPreset.high);
-    _cameraValue = _cameraController.initialize();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[900],
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            collapsedHeight: 300,
-            pinned: true,
-            elevation: 0,
-            // backgroundColor: Colors.grey[900],
-            expandedHeight: WindowSize.height(context) -
-                MediaQuery.paddingOf(context).bottom -
-                150,
-            flexibleSpace: Stack(
-              children: [
-                FutureBuilder(
-                  future: _cameraValue,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      var e = snapshot.error;
-                      if (e is CameraException) {
-                        switch (e.code) {
-                          case 'CameraAccessDenied':
-                            Dialogs.showAlertDialog(DialogParameters(
-                                contentText:
-                                    'You have denied camera access, this app needs permission to access the camera or go to the Settings to enable camera access',
-                                enableButtonText: 'Ok'));
-                            break;
-                          default:
-                            Dialogs.showAlertDialog(DialogParameters(
-                                contentText:
-                                    'Sorry, Unknown Error occurred , please try again later',
-                                enableButtonText: 'Ok'));
-                            break;
-                        }
-                      }
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return SizedBox(
-                        width: double.infinity,
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                              bottom: Radius.circular(30)),
-                          child: CameraPreview(_cameraController),
-                        ),
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: WindowSize.width(context) - 100,
-                    height: WindowSize.width(context),
-                    child: CustomPaint(
-                      painter: CameraBoxSquirclePainter(),
-                    ).paddingOnly(b: 100),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8).copyWith(
-                      bottom: 30,
-                    ),
-                    child: GestureDetector(
-                      onTap: () async {
-                        try {
-                          final image = await _cameraController.takePicture();
-                          print(image.path);
-                          if (!context.mounted) return;
-                          // await Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (context) => DisplayPictureScreen(
-                          //       // Pass the automatically generated path to
-                          //       // the DisplayPictureScreen widget.
-                          //       imagePath: image.path,
-                          //     ),
-                          //   ),
-                          // );
-                        } catch (e) {
-                          Dialogs.confirmDialog(subtitle: e.toString());
-                          print(e);
-                        }
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 3,
-                          ),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Container(
-                          height: 75,
-                          width: 75,
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.all(3),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.search,
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// recents page - welcome (slice string)
 
 //  handle upload of detection images and errors , etc
 
 // error handlinggg
 
-// remove capture page , and its files and put it in another project 
+// date parsing 

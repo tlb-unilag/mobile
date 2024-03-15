@@ -35,7 +35,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   dio: ^5.4.0
   dio_smart_retry: ^6.0.0
-  dotted_border: ^2.1.0
   duration: ^3.0.13
   extended_image: ^8.2.0
   flutter:
@@ -47,7 +46,9 @@ dependencies:
   gap: ^3.0.1
   image_cropper: ^5.0.1
   image_picker: ^1.0.7
+  internet_connection_checker_plus: ^2.2.0
   intl: ^0.19.0
+  permission_handler: ^11.3.0
   shared_preferences: ^2.2.2
   skeletonizer: ^1.0.1
   talker_dio_logger: ^4.0.1
@@ -74,6 +75,12 @@ flutter:
     - assets/images/taro_leaf_blight.png
     - assets/images/placeholder.png
     - assets/images/error-circle.svg
+    - assets/images/errorcircle.svg
+    - assets/images/errorcirclex.svg
+    - assets/images/errortriangle.svg
+    - assets/images/plantscan.svg
+    - assets/images/profile.svg
+    - assets/images/scan.svg
     - assets/country-state.json
     - .env
   #   - images/a_dot_ham.jpeg

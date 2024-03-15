@@ -1,10 +1,7 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
 import 'package:taro_leaf_blight/core/utils/constants/strings.dart';
 import 'package:taro_leaf_blight/features/auth/presentation/login.dart';
-import 'package:taro_leaf_blight/packages/tabs/custom_tab_bar.dart';
-import 'package:taro_leaf_blight/widgets/custom_button.dart';
-
-import '../../../packages/packages.dart';
+import 'package:taro_leaf_blight/packages/packages.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -16,7 +13,12 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
+  void initState() {
+    LocalData.setOnboarded(true);
+    super.initState();
+  }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -30,27 +32,24 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-              AppStrings.taroleafblight,
-              style: CustomTextStyle.label2XLBold.copyWith(letterSpacing: 0.8),
-            ),
-            Text(
-              AppStrings.taroleafblightdesc,
-              style:
-                  CustomTextStyle.paragraphMedium.copyWith(letterSpacing: 0.05),
-            ),
+                  AppStrings.taroleafblight,
+                  style:
+                      CustomTextStyle.label2XLBold.copyWith(letterSpacing: 0.8),
+                ),
+                Text(
+                  AppStrings.taroleafblightdesc,
+                  style: CustomTextStyle.paragraphMedium
+                      .copyWith(letterSpacing: 0.05),
+                ),
               ],
-            )
-          ,
-             const Center(
+            ),
+            const Center(
               child: CircleAvatar(
-              radius: 150,
-              backgroundImage:AssetImage(
-                 'assets/images/taro_leaf_blight.png'
-                 ,
-              )
-             )
-            ,
-             ),
+                  radius: 150,
+                  backgroundImage: AssetImage(
+                    'assets/images/taro_leaf_blight.png',
+                  )),
+            ),
             38.gap,
             Center(
               child: AppButton(
@@ -59,7 +58,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   pushTo(const LoginScreen());
                 },
                 label: "Get Started",
-                // width: 100.w,
               ),
             )
           ],

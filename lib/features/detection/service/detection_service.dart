@@ -1,15 +1,20 @@
+import 'package:taro_leaf_blight/features/auth/providers/auth_provider.dart';
 import 'package:taro_leaf_blight/features/detection/models/detection_model.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
+import 'package:taro_leaf_blight/widgets/dialog_parameters_widget.dart';
 
 // lets are not tampering with our service!
-class DetectionService {
-  DetectionService({this.imageUrl});
 
-  final BackendService _apiService = BackendService(Dio());
+class DetectionService {
+  final AuthNotifier notifier;
+
+  DetectionService(this.notifier, {this.imageUrl});
+
   String? imageUrl;
+  final BackendService _apiService = BackendService(Dio());
 
   DetectionService copyWith({String? imageUrl}) {
-    return DetectionService(imageUrl: imageUrl ?? this.imageUrl);
+    return DetectionService(notifier, imageUrl: imageUrl);
   }
 
   Future<ResponseModel<SingleDetectionResponseModel>> detectOneImage({
@@ -40,11 +45,11 @@ class DetectionService {
     );
   }
 
-  Future<ResponseModel<SingleDetectionResponseModel>> getDetectionById({required String? detectionId}) async {
+  Future<ResponseModel<SingleDetectionResponseModel>> getDetectionById({required String detectionId}) async {
     Response response = await _apiService.runCall(
       _apiService.dio.get('${AppEndpoints.baseUrl}/detection/$detectionId'),
     );
-
+    
     final int statusCode = response.statusCode ?? 000;
 
     if (statusCode >= 200 && statusCode <= 300) {
@@ -78,10 +83,18 @@ class DetectionService {
       );
     }
     if (statusCode == 401) {
-      // Dialogs.confirmDialog()
-      // we need an removable dialog that has a button
-      // yeah this part will render as an error in the recents body , we will get the message from here and throw it as an execption so we can catch it in the when()
-      // show error snackbar "Your session has expired, login again , click button logs you out,takes you to login screen"
+          Dialogs.showAlertDialog(
+           DialogParameters(
+        title: const Text(
+          "Permission Denied",
+          style: CustomTextStyle.labelLXBold,
+        ),
+        contentText:
+            'Your session has expired. Kindly login again ',
+        enableButtonText: 'Ok',
+        onEnablePressed:notifier.logout(),
+        // onDisablePressed: ,
+      ));
     }
     return ResponseModel(
       error: ErrorModel.fromJson(response.data),
@@ -91,4 +104,6 @@ class DetectionService {
   }
 }
 
-var detectionService = DetectionService();
+final notifier = AuthNotifier();
+
+var detectionService = DetectionService(notifier);

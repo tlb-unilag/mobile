@@ -7,11 +7,12 @@ class DialogParameters extends StatelessWidget {
   final String enableButtonText;
   final VoidCallback? onDisablePressed;
   final VoidCallback? onEnablePressed;
-
-  DialogParameters({
+  final Widget? title;
+  const DialogParameters({super.key, 
     required this.contentText,
     this.disableButtonText,
     required this.enableButtonText,
+    this.title,
     this.onDisablePressed,
     this.onEnablePressed,
   });
@@ -19,6 +20,9 @@ class DialogParameters extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      titlePadding: const EdgeInsets.only(left: 20,right: 20, top:20,bottom: 10),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical:0),
+      title: title,
       content: Text(contentText),
       actions: <Widget>[
         if (disableButtonText != null) TextButton(
@@ -37,6 +41,7 @@ class DialogParameters extends StatelessWidget {
           child: Text(enableButtonText),
         ),
       ],
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 35, vertical:10),
     );
   }
 }

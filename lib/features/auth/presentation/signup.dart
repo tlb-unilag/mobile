@@ -1,3 +1,4 @@
+import 'package:taro_leaf_blight/core/utils/constants/strings.dart';
 import 'package:taro_leaf_blight/core/utils/validators.dart';
 import 'package:taro_leaf_blight/features/auth/presentation/login.dart';
 import 'package:taro_leaf_blight/features/auth/providers/auth_provider.dart';
@@ -38,20 +39,20 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Sign Up',
-                style: CustomTextStyle.textxLarge20.w700.black,
+                AppStrings.signup,
+                style: CustomTextStyle.textextraBold24.w700.black,
               ),
               12.gap,
               Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Have an account? ',
+                      text: '${AppStrings.createaccount}  ',
                       style:
                           CustomTextStyle.textsmall14.withColorHex(0xFF17171B),
                     ),
                     TextSpan(
-                      text: 'Log in',
+                      text: AppStrings.login,
                       style: CustomTextStyle.textmedium16.w700
                           .withColor(AppColors.primary),
                       recognizer: TapGestureRecognizer()
@@ -65,8 +66,8 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
               24.gap,
               AppInput(
                 controller: _emailAddressController,
-                labelText: 'Email',
-                hintText: 'Enter your email',
+                labelText: AppStrings.email,
+                hintText: AppStrings.enteryouremail,
                 validator: Validator().isEmail().isNotEmpty().validate,
                 errorText: emailError,
                 keyboardType: TextInputType.emailAddress,
@@ -74,9 +75,9 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
               20.gap,
               AppInput.password(
                 controller: _passwordController,
-                labelText: 'Enter your password',
-                hintText: 'Enter your password',
-                // validator: Validator().isPassword().isNotEmpty().validate,
+                labelText: AppStrings.enteryourpassword,
+                hintText: AppStrings.enteryourpassword,
+                validator: Validator().isPassword().isNotEmpty().validate,
                 errorText: passwordError,
                 keyboardType: TextInputType.visiblePassword,
               ),
@@ -109,17 +110,13 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
                     color: Colors.black,
                     fontSize: 14,
                   ),
-
                   dropdownDialogRadius: 10.0,
-
                   searchBarRadius: 10.0,
-
                   onCountryChanged: (value) {
                     setState(() {
                       countryValue = value;
                     });
                   },
-
                   onStateChanged: (value) {
                     setState(() {
                       stateValue = value;
@@ -146,7 +143,7 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
                                 email: _emailAddressController.text,
                                 password: _passwordController.text));
                       },
-                label: 'Create account',
+                label: AppStrings.createaccount,
               ),
             ],
           ),

@@ -7,8 +7,9 @@ import 'package:taro_leaf_blight/features/detection/provider/detection_provider.
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
 import 'package:taro_leaf_blight/features/info/presentation/info.dart';
 import 'package:taro_leaf_blight/features/recents/presentation/view_all.dart';
-import 'package:taro_leaf_blight/features/upload/presentation/upload.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
+import 'package:taro_leaf_blight/widgets/mock_data_widget.dart';
+import 'package:taro_leaf_blight/widgets/nodetections.dart';
 
 class RecentsScreen extends ConsumerWidget {
   const RecentsScreen({super.key});
@@ -17,6 +18,7 @@ class RecentsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var detections = ref.watch(getAllDetectionsProvider);
     return RefreshIndicator.adaptive(
+      color: AppColors.primary,
       onRefresh: () => ref.refresh(getAllDetectionsProvider.future),
       child: CustomScrollView(
         slivers: [
@@ -24,6 +26,7 @@ class RecentsScreen extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.all(16).copyWith(top: 85),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
                     children: [
@@ -51,56 +54,28 @@ class RecentsScreen extends ConsumerWidget {
                   12.gap,
                   detections.when(
                     skipLoadingOnRefresh: false,
-                    data: (data) {
-                      return Column(
-                          children: data.data.detections
-                              .take(2)
-                              .map<Widget>((detectionInfo) {
-                        return DetectionInfoWidget(
-                            detectionInfo: detectionInfo);
-                      }).toList());
+                    data: (ResponseModel<MultipleDetectionResponseModel> data) {
+                      if (data.data!.detections.isNotEmpty) {
+                        return Column(
+                            children: data.data!.detections
+                                .take(2)
+                                .map<Widget>((detectionInfo) {
+                          return DetectionInfoWidget(
+                              detectionInfo: detectionInfo);
+                        }).toList());
+                      } else {
+                        return const NoDetections();
+                      }
                     },
                     loading: () {
                       return Skeletonizer(
                         child: Column(
                           children: [
-                            Column(
-crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 290.h,
-                                  width: 370.w,
-                                  color: Colors.white,
-                                ),
-                                const Text(
-                                    "This is the mock text for the skeleton")
-                              ],
-                            ),
+                            const MockDataWidget(),
                             20.gap,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 290.h,
-                                  width: 370.w,
-                                  color: Colors.white,
-                                ),
-                                const Text(
-                                    "This is the mock text for the skeleton")
-                              ],
-                            ),
+                            const MockDataWidget(),
                             20.gap,
-                            Column(
-                              children: [
-                                Container(
-                                  height: 290.h,
-                                  width: 370.w,
-                                  color: Colors.white,
-                                ),
-                                const Text(
-                                    "This is the mock text for the skeletonizer date")
-                              ],
-                            ),
+                            const MockDataWidget(),
                             20.gap,
                           ],
                         ),
@@ -132,9 +107,7 @@ class DetectionInfoWidget extends StatefulWidget {
   State<DetectionInfoWidget> createState() => _DetectionInfoWidgetState();
 }
 
-class _DetectionInfoWidgetState extends State<DetectionInfoWidget>
-    with SingleTickerProviderStateMixin {
-
+class _DetectionInfoWidgetState extends State<DetectionInfoWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -142,76 +115,69 @@ class _DetectionInfoWidgetState extends State<DetectionInfoWidget>
         pushTo(DetectionInfoScreen(
           detectionId: widget.detectionInfo.detectionId,
         ));
+        print(widget.detectionInfo.detectionId);
       },
-      child: Column(
-        children: [
-        Container(
-          width: 370.w,
-          height: 290.h,
-          decoration:ShapeDecoration(
-          color: Colors.white,
-          shape: RoundedRectangleBorder (
-                borderRadius: BorderRadius.circular(32.0)
-            )
-        ),
-          child: ExtendedImage.network(
-            fit: BoxFit.cover,
-            clipBehavior: Clip.antiAlias,
-            cache: true,
-            'https://res.cloudinary.com/ogbanugot/image/upload/v1706989569/testl21_e7pr6c.png',
-            borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-            // loadStateChanged: (ExtendedImageState state) {
-            // switch (state.extendedImageLoadState) {
-            //   case LoadState.loading:
-            //     _controller.reset();
-            //     return const CircularProgressIndicator.adaptive();
-            //   case LoadState.completed:
-            //     _controller.forward();
-            //     return FadeTransition(
-            //       opacity: _controller,
-            //       child: ExtendedRawImage(
-            //         image: state.extendedImageInfo?.image,
-            //         width: 370.w,
-            //         height: 290.h,
-            //       ),
-            //     );
-            //   case LoadState.failed:
-            //     _controller.reset();
-            //     return GestureDetector(
-            //       child: Stack(
-            //         fit: StackFit.expand,
-            //         children: <Widget>[
-            //           Image.asset(
-            //             "assets/failed.jpg",
-            //             fit: BoxFit.fill,
-            //           ),
-            //           const Positioned(
-            //             bottom: 0.0,
-            //             left: 0.0,
-            //             right: 0.0,
-            //             child: Text(
-            //               "load image failed, click to reload",
-            //               textAlign: TextAlign.center,
-            //             ),
-            //           )
-            //         ],
-            //       ),
-            //       onTap: () {
-            //         state.reLoadImage();
-            //       },
-            //     );
-            // }
-            // }
+      child: Column(children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            width: 370.w,
+            height: 290.h,
+            color: Colors.white,
+            child: ExtendedImage.network(
+              fit: BoxFit.cover,
+              cache: true,
+              widget.detectionInfo.imageUrl,
+              // loadStateChanged: (ExtendedImageState state) {
+              // switch (state.extendedImageLoadState) {
+              //   case LoadState.loading:
+              //     _controller.reset();
+              //     return const CircularProgressIndicator.adaptive();
+              //   case LoadState.completed:
+              //     _controller.forward();
+              //     return FadeTransition(
+              //       opacity: _controller,
+              //       child: ExtendedRawImage(
+              //         image: state.extendedImageInfo?.image,
+              //         width: 370.w,
+              //         height: 290.h,
+              //       ),
+              //     );
+              //   case LoadState.failed:
+              //     _controller.reset();
+              //     return GestureDetector(
+              //       child: Stack(
+              //         fit: StackFit.expand,
+              //         children: <Widget>[
+              //           Image.asset(
+              //             "assets/failed.jpg",
+              //             fit: BoxFit.fill,
+              //           ),
+              //           const Positioned(
+              //             bottom: 0.0,
+              //             left: 0.0,
+              //             right: 0.0,
+              //             child: Text(
+              //               "load image failed, click to reload",
+              //               textAlign: TextAlign.center,
+              //             ),
+              //           )
+              //         ],
+              //       ),
+              //       onTap: () {
+              //         state.reLoadImage();
+              //       },
+              //     );
+              // }
+              // }
+            ),
           ),
         ),
-         Row(
+        Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Date captured: ',
-               style: CustomTextStyle.labelLXBold
-            ),
-             Text(
+            const Text('Date captured: ', style: CustomTextStyle.labelLXBold),
+            Text(
               '31 January 2024',
               style: CustomTextStyle.textsmall14.withColorHex(0xFF17171B),
             ),

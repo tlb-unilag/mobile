@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
 import 'package:taro_leaf_blight/features/auth/models/auth_model.dart';
 import 'package:taro_leaf_blight/features/home/presentation/home.dart';
@@ -12,11 +13,6 @@ class AuthNotifier extends Notifier<AuthRepo> {
     return AuthRepo();
   }
 
-  // refreshAuth() {
-  //   state.isLoggedIn = LocalData.token != null;
-  //   state = state;
-  // }
-
   logout([BuildContext? context]) {
     LocalData.removeToken();
     pushToAndClearStack(const OnboardingScreen());
@@ -29,6 +25,7 @@ class AuthNotifier extends Notifier<AuthRepo> {
     );
   }
 
+// for incorrect login details it says something went wrong please try again later which is wrong
   Future<void> loginUser(
       {required String? email, required String? password}) async {
     Dialogs.showLoadingDialog();
@@ -59,6 +56,9 @@ class AuthNotifier extends Notifier<AuthRepo> {
       LocalData.setToken(res.data!.accessToken!);
       pushToAndClearStack(const HomeScreen());
     } else {
+      if (kDebugMode) {
+        print(res.message);
+      }
       Dialogs.showErrorSnackbar(message: res.error!.message!);
     }
   }
@@ -137,7 +137,7 @@ class AuthRepo {
         valid: true,
         statusCode: statusCode,
         message: response.statusMessage,
-        data: AuthResponseModel.fromJson(response.data), 
+        data: AuthResponseModel.fromJson(response.data),
       );
     }
 

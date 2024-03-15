@@ -1,3 +1,4 @@
+import 'package:taro_leaf_blight/core/utils/constants/strings.dart';
 import 'package:taro_leaf_blight/core/utils/validators.dart';
 import 'package:taro_leaf_blight/features/auth/presentation/signup.dart';
 import 'package:taro_leaf_blight/features/auth/providers/auth_provider.dart';
@@ -10,11 +11,20 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+
   final _emailAddressController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String? emailError;
   String? passwordError;
+
+   @override
+  void dispose() {
+    super.dispose();
+    _passwordController.dispose();
+    _emailAddressController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,22 +36,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: [ 
               Text(
-                'Welcome Back',
-                style: CustomTextStyle.textxLarge20.w700.black,
+                AppStrings.welcomeback,
+                style: CustomTextStyle.textextraBold24.w700.black
               ),
               12.gap,
               Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'New to taro leaf blight detector? ',
+                      text: AppStrings.taroleafnew,
                       style:
                           CustomTextStyle.textsmall14.withColorHex(0xFF17171B),
                     ),
                     TextSpan(
-                      text: 'Create account',
+                      text: ' ${AppStrings.createaccount}',
                       style: CustomTextStyle.textmedium16.w700
                           .withColor(AppColors.primary),
                       recognizer: TapGestureRecognizer()
@@ -55,8 +65,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               30.gap,
               AppInput(
                 controller: _emailAddressController,
-                labelText: 'Email',
-                hintText: 'Enter your email',
+                labelText: AppStrings.email,
+                hintText: AppStrings.enteryouremail,
                 validator: Validator().isEmail().isNotEmpty().validate,
                 errorText: emailError,
                 keyboardType: TextInputType.emailAddress,
@@ -64,9 +74,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               20.gap,
               AppInput.password(
                 controller: _passwordController,
-                labelText: 'Password',
-                hintText: 'Enter your password',
-                // validator: Validator().isPassword().isNotEmpty().validate,
+                labelText: AppStrings.password,
+                hintText: AppStrings.enteryourpassword,
+                validator: Validator().isPassword().isNotEmpty().validate,
                 errorText: passwordError,
                 keyboardType: TextInputType.visiblePassword,
               ),
@@ -88,19 +98,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 password: _passwordController.text,
                                 email: _emailAddressController.text));
                       },
-                label: 'Log in',
+                label: AppStrings.login
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _passwordController.dispose();
-    _emailAddressController.dispose();
   }
 }

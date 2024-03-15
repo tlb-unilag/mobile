@@ -1,6 +1,5 @@
 import 'package:taro_leaf_blight/features/upload/models/cloudinary_resource_type.dart';
 import 'package:taro_leaf_blight/features/upload/models/cloudinary_response.dart';
-import 'package:taro_leaf_blight/features/upload/models/cloudinary_upload_resource.dart';
 import 'package:taro_leaf_blight/features/upload/service/cloudinary_api.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 

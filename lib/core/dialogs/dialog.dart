@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:taro_leaf_blight/widgets/dialog_parameters_widget.dart';
 
 class Dialogs {
- static void showLoadingDialog({Widget? child}) {
+  static void showLoadingDialog({Widget? child}) {
     showDialog(
       context: NavigationService.navigatorKey.currentState!.context,
       barrierDismissible: kDebugMode,
@@ -18,20 +18,18 @@ class Dialogs {
         } else {
           return Material(
             color: Colors.transparent,
-            child: Center(
-              child: child
-            ),
+            child: Center(child: child),
           );
         }
       },
     );
   }
 
-  static void showAlertDialog(DialogParameters parameters) {
+  static void showAlertDialog(DialogParameters parameters,) {
     showDialog(
       context: NavigationService.navigatorKey.currentState!.context,
       barrierDismissible: kDebugMode,
-      builder: (context) {
+      builder: (BuildContext context) {
         return parameters;
       },
     );
@@ -39,12 +37,16 @@ class Dialogs {
 
   static void showErrorSnackbar({
     required String message,
+    SnackBarAction? action,
+    Duration duration = const Duration(seconds: 4)
   }) {
     ScaffoldMessenger.of(NavigationService.navigatorKey.currentState!.context)
         .showSnackBar(
       SnackBar(
+        duration: duration,
         content: Text(message),
         backgroundColor: Colors.red,
+        action: action
       ),
     );
   }

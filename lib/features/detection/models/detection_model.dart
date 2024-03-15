@@ -4,18 +4,18 @@ import 'package:taro_leaf_blight/core/utils/extensions/date_extensions.dart';
 class SingleDetectionResponseModel {
   String detectionId;
   String imageUrl;
-  int taroLate;
-  int taroMid;
   int taroEarly;
+  int taroNotEarly;
+  int taroHealthy;
   String? userId;
   String createdAt;
 
   SingleDetectionResponseModel({
     required this.detectionId,
     required this.imageUrl,
-    required this.taroLate,
-    required this.taroMid,
     required this.taroEarly,
+    required this.taroNotEarly,
+    required this.taroHealthy,
     this.userId,
     required this.createdAt,
   });
@@ -24,10 +24,11 @@ class SingleDetectionResponseModel {
     return SingleDetectionResponseModel(
       detectionId: json['detection_id'],
       imageUrl: json['image_url'],
-      taroLate: json['taro_late'],
-      taroMid: json['taro_mid'],
-      taroEarly: json['taro_early'],
+      taroEarly: json['early'],
+      taroNotEarly: json['not_early'],
+      taroHealthy: json['healthy'],
       userId: json['user_id'],
+      //TODO parse date 
       createdAt: DateFormat('yyyy-MM-dd HH:mm:ss')
           .format(DateTime.parse(json['created_at'])),
     );
@@ -37,9 +38,9 @@ class SingleDetectionResponseModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['detection_id'] = detectionId;
     data['image_url'] = imageUrl;
-    data['taro_late'] = taroLate;
-    data['taro_mid'] = taroMid;
-    data['taro_early'] = taroEarly;
+    data['early'] = taroEarly;
+    data['not_early'] = taroNotEarly;
+    data['healthy'] = taroHealthy;
     data['user_id'] = userId;
     data['created_at'] = createdAt;
     return data;

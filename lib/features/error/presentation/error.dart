@@ -11,14 +11,18 @@ class ErrorScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(
+            height: 110.h,
+          ),
           SvgPicture.asset(
-            'assets/images/error-circle.svg',
+            'assets/images/errorcirclex.svg',
             width: 300,
-            height: 200,
+            height: 170,
           ),
           Text(
             error.toString(),
-            style: CustomTextStyle.paragraphMedium,
+           style: CustomTextStyle.labelLXBold,
+          textAlign: TextAlign.center,
           ),
           const SizedBox(
             height: 20,
@@ -29,8 +33,7 @@ class ErrorScreen extends StatelessWidget {
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.refresh_outlined),
-                const Text("Retry"),
+                Text("Retry"),
               ],
             )
           )
