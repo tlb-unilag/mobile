@@ -1,5 +1,6 @@
 import 'package:taro_leaf_blight/core/utils/constants/strings.dart';
 import 'package:taro_leaf_blight/core/utils/validators.dart';
+import 'package:taro_leaf_blight/features/auth/presentation/email_verification.dart';
 import 'package:taro_leaf_blight/features/auth/presentation/signup.dart';
 import 'package:taro_leaf_blight/features/auth/providers/auth_provider.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
@@ -79,6 +80,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 validator: Validator().isPassword().isNotEmpty().validate,
                 errorText: passwordError,
                 keyboardType: TextInputType.visiblePassword,
+              ),
+              24.gap,
+               Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                 children: [
+                   Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: ' ${AppStrings.forgotPassword}',
+                          style: CustomTextStyle.textmedium16.w700
+                              .withColor(AppColors.primary),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              pushTo(const EmailVerificationScreen());
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               24.gap,
               AppButton(

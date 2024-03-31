@@ -19,24 +19,36 @@ class ErrorModel {
   String? errorCode;
   String? message;
   dynamic errorField;
-  String? token;
+  String? detail;
+  // String? token;
 
-  ErrorModel({this.errorCode, this.message, this.errorField, this.token});
+  ErrorModel(
+      {this.errorCode,
+      this.message,
+      this.errorField,
+      // this.token,
+      this.detail});
 
   @override
   String toString() {
-    return '{errorCode: $errorCode, message: $message}';
+    return '{errorCode: $errorCode, message: $message, detail: $detail}';
   }
 
   factory ErrorModel.fromJson(dynamic data) {
     if (data is String) {
       return ErrorModel(
-          errorCode: '', message: data, errorField: '', token: '');
+          errorCode: '', message: data, 
+          errorField: '', 
+          detail:''
+          // token: ''
+          );
     }
     return ErrorModel(
         errorCode: data['errorCode'] ?? '',
         message: data['message'] ?? '',
         errorField: data['errorField'] ?? '',
-        token: data['token'] ?? '');
+        detail: data['detail'] ?? ''
+        // token: data['token'] ?? ''
+    );
   }
 }

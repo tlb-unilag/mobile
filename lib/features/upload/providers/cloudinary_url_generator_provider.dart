@@ -28,17 +28,11 @@ class CloudinaryApiService {
       resourceType: CloudinaryResourceType.image,
       progressCallback: (count, total) {},
     );
-
     pop();
     if (!res.valid) {
-      pop();
       Dialogs.showErrorSnackbar(
-          message: res.message!,
-          action: SnackBarAction(
-              label: "Retry",
-              onPressed: () {
-                cloudinaryService.uploadImage(file);
-              }));
+        message: res.message!,
+      );
     }
     return res;
   }

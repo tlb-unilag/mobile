@@ -514,6 +514,7 @@ class _AppInputState extends State<AppInput> {
     }
 
     return InkWell(
+      focusColor: Colors.white,
       onTap: widget.onTap ??
           (widget.readOnly
               ? null

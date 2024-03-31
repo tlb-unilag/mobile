@@ -4,7 +4,7 @@ import 'package:taro_leaf_blight/features/detection/models/detection_model.dart'
 import 'package:taro_leaf_blight/features/detection/service/detection_service.dart';
 import 'package:taro_leaf_blight/features/info/presentation/info.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
-import 'package:taro_leaf_blight/widgets/dialog_parameters_widget.dart';
+
 
 Future<ResponseModel<SingleDetectionResponseModel>> detectOneImage(
   String? imageUrl,
@@ -21,10 +21,9 @@ Future<ResponseModel<SingleDetectionResponseModel>> detectOneImage(
       ],
     ),
   ));
-  ResponseModel<SingleDetectionResponseModel> res =
-      await detectionService.detectOneImage(imageUrl: imageUrl);
+  ResponseModel<SingleDetectionResponseModel> res = await detectionService.detectOneImage(imageUrl: imageUrl);
+  pop();
   var detectionId = res.data?.detectionId;
-  // pop();
   if (res.valid) {
     pushTo(DetectionInfoScreen(
       detectionId: detectionId!,
@@ -35,7 +34,7 @@ Future<ResponseModel<SingleDetectionResponseModel>> detectOneImage(
         duration: const Duration(seconds: 8),
         message: res.message!,
         action: SnackBarAction(
-          textColor: Colors.white,
+            textColor: Colors.white,
             label: "Retry",
             onPressed: () {
               detectOneImage(imageUrl);

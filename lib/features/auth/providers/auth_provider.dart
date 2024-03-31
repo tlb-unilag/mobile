@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
 import 'package:taro_leaf_blight/features/auth/models/auth_model.dart';
+import 'package:taro_leaf_blight/features/auth/models/validate_model.dart';
+import 'package:taro_leaf_blight/features/auth/presentation/login.dart';
+import 'package:taro_leaf_blight/features/auth/presentation/reset_password.dart';
 import 'package:taro_leaf_blight/features/home/presentation/home.dart';
 import 'package:taro_leaf_blight/features/onboarding/presentation/onboarding.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
@@ -62,6 +65,47 @@ class AuthNotifier extends Notifier<AuthRepo> {
       Dialogs.showErrorSnackbar(message: res.error!.message!);
     }
   }
+
+  Future<void> receivePasswordResetToken({required String? email}) async {
+    Dialogs.showLoadingDialog();
+    final res = await state.validateEmail(
+      email: email!,
+    );
+    pop();
+    if (res.valid) {
+      Dialogs.showSuccessSnackbar(
+          message: "Password reset token sent successfully , check your email ");
+      pushToAndClearStack(ResetPasswordScreen(email: email,));
+    } else {
+      print(res);
+      Dialogs.showErrorSnackbar(message: res.error!.message!);
+      // Dialogs.showErrorSnackbar(message: res.error!.detail!);
+    }
+  }
+
+  Future<void> resetPassword({
+    required String? email, 
+    required String? resetToken, 
+    required String? newPassword
+}) async {
+    Dialogs.showLoadingDialog();
+    final res = await state.resetPassword(
+      resetToken: resetToken!,
+      email: email!,
+      newPassword: newPassword!
+    );
+    pop();
+    if (res.valid) {
+      Dialogs.showSuccessSnackbar(
+          message: "Password reset successfully");
+      pushToAndClearStack(const LoginScreen());
+    } else {
+      print(res);
+      Dialogs.showErrorSnackbar(message: res.error!.message!);
+      // Dialogs.showErrorSnackbar(message: res.error!.detail!);
+    }
+  }
+
 }
 
 class AuthRepo {
@@ -84,7 +128,7 @@ class AuthRepo {
         state: state ?? this.state);
   }
 
-  Future<ResponseModel> loginWithEmailAndPassword({
+  Future<ResponseModel<AuthResponseModel>> loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -96,6 +140,8 @@ class AuthRepo {
     );
 
     final int statusCode = response.statusCode ?? 000;
+
+    print("here is the response: $response");
 
     if (statusCode >= 200 && statusCode <= 300) {
       return ResponseModel<AuthResponseModel>(
@@ -140,6 +186,75 @@ class AuthRepo {
         data: AuthResponseModel.fromJson(response.data),
       );
     }
+
+    return ResponseModel(
+      error: ErrorModel.fromJson(response.data['detail']),
+      statusCode: statusCode,
+      message: response.data['message'],
+    );
+  }
+
+  Future<ResponseModel<ValidateModel>> validateEmail({
+    required String email,
+  }) async {
+    Response response = await _apiService.runCall(
+      _apiService.dio.post(
+        '${AppEndpoints.baseUrl}/forgot-password',
+        data: {
+          "email": email,
+        },
+      ),
+    );
+
+    // this is the response here
+    final int statusCode = response.statusCode ?? 000;
+
+    if (statusCode >= 200 && statusCode <= 300) {
+      return ResponseModel<ValidateModel>(
+        valid: true,
+        statusCode: statusCode,
+        message: response.statusMessage,
+        data: ValidateModel.fromJson(response.data),
+      );
+    }
+    print("here is the response: ${response}");
+    print("here is the response: ${response.data}");
+
+    return ResponseModel(
+      error: ErrorModel.fromJson(response.data),
+      statusCode: statusCode,
+      message: response.data['message'],
+    );
+  }
+  Future<ResponseModel<ValidateModel>> resetPassword({
+    required String email,
+    required String resetToken,
+    required String newPassword
+  }) async {
+    Response response = await _apiService.runCall(
+      _apiService.dio.post(
+        '${AppEndpoints.baseUrl}/reset-password',
+        data: {
+          "email": email,
+          "reset_token": resetToken,
+          "new_password": newPassword
+        },
+      ),
+    );
+
+    // this is the response here
+    final int statusCode = response.statusCode ?? 000;
+
+    if (statusCode >= 200 && statusCode <= 300) {
+      return ResponseModel<ValidateModel>(
+        valid: true,
+        statusCode: statusCode,
+        message: response.statusMessage,
+        data: ValidateModel.fromJson(response.data),
+      );
+    }
+    print("here is the response: ${response}");
+    print("here is the response: ${response.data}");
 
     return ResponseModel(
       error: ErrorModel.fromJson(response.data),

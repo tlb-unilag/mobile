@@ -10,6 +10,7 @@ class ViewAllScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    
     var detections = ref.watch(getAllDetectionsProvider);
     return Scaffold(
       appBar: AppBar(leading: backButton(context)),
@@ -29,7 +30,6 @@ class ViewAllScreen extends ConsumerWidget {
                         if (data.data!.detections.isNotEmpty) {
                           return Column(
                               children: data.data!.detections
-                                  .take(2)
                                   .map<Widget>((detectionInfo) {
                             return DetectionInfoWidget(
                                 detectionInfo: detectionInfo);

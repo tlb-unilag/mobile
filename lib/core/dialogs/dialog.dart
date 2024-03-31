@@ -65,10 +65,12 @@ class Dialogs {
 
   static void showSuccessSnackbar({
     required String message,
+     Duration duration = const Duration(seconds: 4)
   }) {
     ScaffoldMessenger.of(NavigationService.navigatorKey.currentState!.context)
         .showSnackBar(
       SnackBar(
+        duration: duration,
         content: Text(
           message,
           style: const TextStyle(

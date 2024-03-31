@@ -1,3 +1,4 @@
+import 'package:taro_leaf_blight/core/utils/extensions/date_extensions.dart';
 import 'package:taro_leaf_blight/features/detection/models/detection_model.dart';
 import 'package:taro_leaf_blight/features/detection/provider/detection_provider.dart';
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
@@ -12,6 +13,7 @@ class DetectionInfoScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var detection = ref.watch(getDetectionByIdProvider(detectionId));
+    
     return Scaffold(
       appBar: AppBar(leading: backButton(context)),
       body: CustomScrollView(
@@ -74,7 +76,7 @@ class DetectionInfoScreen extends ConsumerWidget {
                               CustomInfoWidget(
                                 color: Colors.white,
                                 labelText: "Date",
-                                data: data.data!.createdAt,
+                                data:  DateTime.parse(data.data!.createdAt).formatDateAndTime,
                               ),
                             ]),
                       ],

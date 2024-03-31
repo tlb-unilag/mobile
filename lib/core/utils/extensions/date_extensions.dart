@@ -34,6 +34,7 @@ extension DateExtension on DateTime {
 
   /// dd/MM/yyyy hh:mm
   String get formatDateAndTime => DateFormat('dd/MM/yyyy hh:mm').format(this);
+  
   String get formatTime => DateFormat('hh:mm').format(this);
   String get formatTimeOnly24 => DateFormat('HH:mm').format(this);
   String get formatTimeOnly24WithSeconds => DateFormat('HH:mm:ss').format(this);

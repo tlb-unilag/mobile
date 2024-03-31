@@ -1,3 +1,4 @@
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:taro_leaf_blight/features/upload/models/cloudinary_resource_type.dart';
 import 'package:taro_leaf_blight/features/upload/models/cloudinary_response.dart';
 import 'package:taro_leaf_blight/features/upload/service/cloudinary_api.dart';
@@ -55,10 +56,10 @@ class CloudinaryClient extends CloudinaryApi {
     if (optParams != null) params.addAll(optParams);
     params['api_key'] = apiKey;
     params['file'] = fileBytes != null
-        ? MultipartFile.fromBytes(fileBytes,
+        ? MultipartFileRecreatable.fromBytes(fileBytes,
             filename:
                 fileName ?? DateTime.now().millisecondsSinceEpoch.toString())
-        : await MultipartFile.fromFile(filePath!, filename: fileName);
+        : MultipartFileRecreatable.fromFileSync(filePath!);
     params['timestamp'] = timeStamp;
     params['signature'] =
         getSignature(secret: apiSecret, timeStamp: timeStamp, params: params);
@@ -140,3 +141,4 @@ var cloudinaryClient = CloudinaryClient(
     apiKey: dotenv.env['CL_API_KEY']!,
     apiSecret: dotenv.env['CL_SECRET']!,
     cloudName: dotenv.env['CL_NAME']!);
+

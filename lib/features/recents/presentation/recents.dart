@@ -2,6 +2,8 @@
 // import 'package:taro_leaf_blight/features/home/presentation/info.dart';
 
 export 'package:extended_image/extended_image.dart';
+import 'package:intl/intl.dart';
+import 'package:taro_leaf_blight/core/utils/extensions/date_extensions.dart';
 import 'package:taro_leaf_blight/features/detection/models/detection_model.dart';
 import 'package:taro_leaf_blight/features/detection/provider/detection_provider.dart';
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
@@ -110,12 +112,12 @@ class DetectionInfoWidget extends StatefulWidget {
 class _DetectionInfoWidgetState extends State<DetectionInfoWidget> {
   @override
   Widget build(BuildContext context) {
+        String dateTime = DateTime.parse(widget.detectionInfo.createdAt).formatDateAndTime;
     return InkWell(
       onTap: () {
         pushTo(DetectionInfoScreen(
           detectionId: widget.detectionInfo.detectionId,
         ));
-        print(widget.detectionInfo.detectionId);
       },
       child: Column(children: [
         ClipRRect(
@@ -178,7 +180,7 @@ class _DetectionInfoWidgetState extends State<DetectionInfoWidget> {
           children: [
             const Text('Date captured: ', style: CustomTextStyle.labelLXBold),
             Text(
-              '31 January 2024',
+              dateTime,
               style: CustomTextStyle.textsmall14.withColorHex(0xFF17171B),
             ),
           ],

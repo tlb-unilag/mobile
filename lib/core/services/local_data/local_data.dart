@@ -29,11 +29,12 @@ class LocalData {
     return prefs.getBool('isOnboarded') ?? false;
   }
 
-  static Future<void> setIsFilePresent(bool isOnboarded) async {
-    await prefs.setBool('isOnboarded', isOnboarded);
+// what f the file path has been moved or doesnt exist anymore?
+  static Future<void> saveImageFile(String imagePath) async {
+    await prefs.setString('imagePath', imagePath);
   }
 
-  static bool get isFilePresent {
-    return prefs.getBool('isFilePresent') ?? false;
+   static Future<String?> getImageFilePath() async {
+    return prefs.getString('imagePath');
   }
 }

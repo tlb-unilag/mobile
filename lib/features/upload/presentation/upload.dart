@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 // import 'package:app_settings/app_settings.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
 import 'package:taro_leaf_blight/features/capture/service/image_picker_service.dart';
 import 'package:taro_leaf_blight/features/detection/provider/detection_provider.dart';
 import 'package:taro_leaf_blight/features/upload/providers/cloudinary_url_generator_provider.dart';
@@ -24,8 +26,12 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
 
   void _updateImage(File? croppedImage) {
     setState(() {
+      // cache it here
       file = croppedImage;
     });
+     if (croppedImage != null) {
+      LocalData.saveImageFile(croppedImage.path);
+    }
   }
 
   void getImageAndUpdate(
@@ -44,8 +50,8 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
         if (e is PlatformException) {
           switch (e.code) {
             case 'camera_access_denied':
-              Dialogs.showAlertDialog(const DialogParameters(
-                title: Text(
+              Dialogs.showAlertDialog(DialogParameters(
+                title: const Text(
                   "Permission Denied",
                   style: CustomTextStyle.labelLXBold,
                 ),
@@ -53,7 +59,9 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
                     'You have denied camera access, this app needs permission to access the camera or go to the Settings to enable camera access',
                 enableButtonText: 'Ok',
                 disableButtonText: 'Go to Settings',
-                // onDisablePressed: ,
+                onDisablePressed: () {
+                  openAppSettings();
+                },
               ));
               break;
             default:
@@ -134,10 +142,9 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
           switch (status) {
             case true:
               await cloudinaryService.uploadImage(file!).then((value) {
-                // null check operator used on a null value
-                // when i interrupt the upload image
-                //'_history.isNotEmpty': is not true.
-                detectOneImage(value.data?.url);
+                if (value.data != null) {
+                  detectOneImage(value.data?.url);
+                }
               });
               break;
             case false:
