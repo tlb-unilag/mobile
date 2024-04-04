@@ -18,8 +18,11 @@ class _EmailVerificationScreenState
   final _formKey = GlobalKey<FormState>();
   String? emailError;
 
-  late Timer _timer;
+  Timer _timer = Timer(const Duration(seconds: 1), () {});
   int _start = 0;
+
+// can we change this from setState to valueListenableBuilder?
+  // var _start1 = ValueNotifier<int>(0);
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -57,7 +60,10 @@ class _EmailVerificationScreenState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          leading: backButton(context), title: const Text("Reset Password")),
+          leading: backButton(context),
+           elevation: 10,
+          backgroundColor: AppColors.primary,
+      ),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -65,9 +71,6 @@ class _EmailVerificationScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(AppStrings.enteryouremail,
-                  style: CustomTextStyle.textextraBold24.w700.black),
-              // 12.gap,
               30.gap,
               AppInput(
                 controller: _emailAddressController,
@@ -90,10 +93,22 @@ class _EmailVerificationScreenState
                             .withColor(AppColors.primary),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            setState(() {
-                              _start = 60;
-                              startTimer();
-                            });
+                            print("data");
+                            emailError == null
+                                ? () {
+                                    if (_formKey.currentState!.validate()) {
+                                      ref
+                                          .read(authProvider.notifier)
+                                          .receivePasswordResetToken(
+                                              email:
+                                                  _emailAddressController.text);
+                                    }
+                                    setState(() {
+                                      _start = 60;
+                                      startTimer();
+                                    });
+                                  }
+                                : null;
                           },
                       ),
                     ], text: "${AppStrings.tokenNotSent} "),
@@ -109,8 +124,7 @@ class _EmailVerificationScreenState
                             ref
                                 .read(authProvider.notifier)
                                 .receivePasswordResetToken(
-                                    email: _emailAddressController.text
-                                );
+                                    email: _emailAddressController.text);
                           }
                         }
                       : null,

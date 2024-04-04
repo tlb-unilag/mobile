@@ -28,7 +28,6 @@ class SingleDetectionResponseModel {
       taroNotEarly: json['not_early'],
       taroHealthy: json['healthy'],
       userId: json['user_id'],
-      //TODO parse date 
       createdAt: DateFormat('yyyy-MM-dd HH:mm:ss')
           .format(DateTime.parse(json['created_at'])),
     );

@@ -151,8 +151,8 @@ GestureDetector backButton(BuildContext context) {
       alignment: Alignment.center,
       child: Icon(
         Icons.arrow_back_ios_new_rounded,
-        size: 35,
-        color: Colors.black,
+        size: 30,
+        color: Colors.white,
       ),
     ),
   );

@@ -5,13 +5,13 @@ export 'package:extended_image/extended_image.dart';
 import 'package:intl/intl.dart';
 import 'package:taro_leaf_blight/core/utils/extensions/date_extensions.dart';
 import 'package:taro_leaf_blight/features/detection/models/detection_model.dart';
-import 'package:taro_leaf_blight/features/detection/provider/detection_provider.dart';
+import 'package:taro_leaf_blight/features/detection/provider/detection_providers.dart';
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
 import 'package:taro_leaf_blight/features/info/presentation/info.dart';
 import 'package:taro_leaf_blight/features/recents/presentation/view_all.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 import 'package:taro_leaf_blight/widgets/mock_data_widget.dart';
-import 'package:taro_leaf_blight/widgets/nodetections.dart';
+import 'package:taro_leaf_blight/widgets/no_detections.dart';
 
 class RecentsScreen extends ConsumerWidget {
   const RecentsScreen({super.key});
@@ -26,7 +26,7 @@ class RecentsScreen extends ConsumerWidget {
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16).copyWith(top: 85),
+              padding: const EdgeInsets.all(16).copyWith(top:20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

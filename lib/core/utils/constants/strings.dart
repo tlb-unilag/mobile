@@ -25,4 +25,14 @@ class AppStrings {
   static const tokenNotSent = "Didn't receive a token?";
   static const resend = "Resend";
   static const confirm = "Confirm";
+  static const crashViewTitleMessage = 'Oh :(';
+  static const crashViewQuoteMessage = "'\"Houston, we have a problem\"'";
+  static const crashViewQuoteAuthor = "Crash view quote author";
+  static const crashViewBugMessage1 =
+      "You just found a bug, no need to panic, we have logged the issue and would provide a resolution as soon as possible";
+  static const crashViewBugMessage2 =
+      "If there\'s more to it, you could also file a personal complaint with our customer service representative";
+  static const changePassword = "Change Password";
+  static const updateDetails = "Update Details";
+  static const termsAndConditions = "Terms and conditions";
 }

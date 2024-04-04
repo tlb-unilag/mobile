@@ -4,12 +4,7 @@ import 'package:taro_leaf_blight/packages/packages.dart';
 import 'package:taro_leaf_blight/core/utils/constants/strings.dart';
 import 'package:taro_leaf_blight/core/utils/validators.dart';
 import 'package:taro_leaf_blight/features/auth/providers/auth_provider.dart';
-import 'package:taro_leaf_blight/packages/packages.dart';
 
-import 'package:taro_leaf_blight/core/utils/constants/strings.dart';
-import 'package:taro_leaf_blight/core/utils/validators.dart';
-import 'package:taro_leaf_blight/features/auth/providers/auth_provider.dart';
-import 'package:taro_leaf_blight/packages/packages.dart';
 
 class ResetPasswordScreen extends ConsumerStatefulWidget {
   final String email;
@@ -45,7 +40,10 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          leading: backButton(context), title: const Text("Reset Password")),
+          leading: backButton(context),
+          elevation: 10,
+          backgroundColor: AppColors.primary,
+        ),
       body: Form(
         key: _formKey,
         child: Padding(

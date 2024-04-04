@@ -6,7 +6,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:permission_handler/permission_handler.dart';
 import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
 import 'package:taro_leaf_blight/features/capture/service/image_picker_service.dart';
-import 'package:taro_leaf_blight/features/detection/provider/detection_provider.dart';
+import 'package:taro_leaf_blight/features/detection/provider/detection_providers.dart';
 import 'package:taro_leaf_blight/features/upload/providers/cloudinary_url_generator_provider.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 import 'package:taro_leaf_blight/widgets/dialog_parameters_widget.dart';

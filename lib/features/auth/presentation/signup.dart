@@ -47,7 +47,7 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: '${AppStrings.createaccount}  ',
+                      text: '${AppStrings.haveanaccount} ',
                       style:
                           CustomTextStyle.textsmall14.withColorHex(0xFF17171B),
                     ),

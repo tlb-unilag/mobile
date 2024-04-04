@@ -1,6 +1,6 @@
 import 'package:taro_leaf_blight/core/utils/extensions/date_extensions.dart';
 import 'package:taro_leaf_blight/features/detection/models/detection_model.dart';
-import 'package:taro_leaf_blight/features/detection/provider/detection_provider.dart';
+import 'package:taro_leaf_blight/features/detection/provider/detection_providers.dart';
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 import 'package:taro_leaf_blight/widgets/custominfo_widget.dart';

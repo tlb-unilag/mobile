@@ -57,6 +57,9 @@ class AuthNotifier extends Notifier<AuthRepo> {
     pop();
     if (res.valid) {
       LocalData.setToken(res.data!.accessToken!);
+      LocalData.setEmail(email);
+      LocalData.setCountry(country);
+      LocalData.setCountryState(countryState);
       pushToAndClearStack(const HomeScreen());
     } else {
       if (kDebugMode) {

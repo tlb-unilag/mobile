@@ -29,7 +29,32 @@ class LocalData {
     return prefs.getBool('isOnboarded') ?? false;
   }
 
-// what f the file path has been moved or doesnt exist anymore?
+  static Future<void> setEmail(String token) async {
+    await prefs.setString('email', token);
+  }
+
+  static String? get email {
+    return prefs.getString('email');
+  }
+
+  static Future<void> setCountryState(String token) async {
+    await prefs.setString('countryState', token);
+  }
+
+  static String? get countryState {
+    return prefs.getString('countryState');
+  }
+
+  static Future<void> setCountry(String token) async {
+    await prefs.setString('country', token);
+  }
+
+  static String? get country {
+    return prefs.getString('country');
+  }
+
+  
+  // what if the file path has been moved or doesnt exist anymore?
   static Future<void> saveImageFile(String imagePath) async {
     await prefs.setString('imagePath', imagePath);
   }
@@ -37,4 +62,5 @@ class LocalData {
    static Future<String?> getImageFilePath() async {
     return prefs.getString('imagePath');
   }
+
 }

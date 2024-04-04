@@ -211,9 +211,3 @@ class TokenRouter extends StatelessWidget {
   }
 }
 
-
-//  handle upload of detection images and errors , etc
-
-// error handlinggg
-
-// date parsing 

@@ -1,9 +1,9 @@
-import 'package:taro_leaf_blight/features/detection/provider/detection_provider.dart';
+import 'package:taro_leaf_blight/features/detection/provider/detection_providers.dart';
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
 import 'package:taro_leaf_blight/features/recents/presentation/recents.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 import 'package:taro_leaf_blight/widgets/mock_data_widget.dart';
-import 'package:taro_leaf_blight/widgets/nodetections.dart';
+import 'package:taro_leaf_blight/widgets/no_detections.dart';
 
 class ViewAllScreen extends ConsumerWidget {
   const ViewAllScreen({super.key});
@@ -13,8 +13,9 @@ class ViewAllScreen extends ConsumerWidget {
     
     var detections = ref.watch(getAllDetectionsProvider);
     return Scaffold(
-      appBar: AppBar(leading: backButton(context)),
+      appBar: AppBar(leading: backButton(context),backgroundColor: AppColors.primary,),
       body: RefreshIndicator.adaptive(
+         color: AppColors.primary,
         onRefresh: () => ref.refresh(getAllDetectionsProvider.future),
         child: CustomScrollView(
           slivers: [
