@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
 import 'package:taro_leaf_blight/features/auth/models/auth_model.dart';
 import 'package:taro_leaf_blight/features/auth/models/validate_model.dart';
@@ -11,6 +10,7 @@ import 'package:taro_leaf_blight/packages/packages.dart';
 final authProvider = NotifierProvider<AuthNotifier, AuthRepo>(AuthNotifier.new);
 
 class AuthNotifier extends Notifier<AuthRepo> {
+
   @override
   build() {
     return AuthRepo();
@@ -28,18 +28,20 @@ class AuthNotifier extends Notifier<AuthRepo> {
     );
   }
 
-// for incorrect login details it says something went wrong please try again later which is wrong
   Future<void> loginUser(
       {required String? email, required String? password}) async {
     Dialogs.showLoadingDialog();
     ResponseModel res = await state.loginWithEmailAndPassword(
-        email: email!, password: password!);
+        email: email!, 
+        password: password!
+    );
     pop();
     if (res.valid) {
       LocalData.setToken(res.data!.accessToken!);
+      LocalData.setEmail(email);
       pushToAndClearStack(const HomeScreen());
     } else {
-      Dialogs.showErrorSnackbar(message: res.error!.message!);
+      Dialogs.showErrorSnackbar(message: res.error!.data["data"]["detail"]);
     }
   }
 
@@ -62,10 +64,7 @@ class AuthNotifier extends Notifier<AuthRepo> {
       LocalData.setCountryState(countryState);
       pushToAndClearStack(const HomeScreen());
     } else {
-      if (kDebugMode) {
-        print(res.message);
-      }
-      Dialogs.showErrorSnackbar(message: res.error!.message!);
+      Dialogs.showErrorSnackbar(message: res.error!.data["data"]["detail"]);
     }
   }
 
@@ -77,38 +76,31 @@ class AuthNotifier extends Notifier<AuthRepo> {
     pop();
     if (res.valid) {
       Dialogs.showSuccessSnackbar(
-          message: "Password reset token sent successfully , check your email ");
-      pushToAndClearStack(ResetPasswordScreen(email: email,));
+          message:
+              "Password reset token sent successfully , check your email ");
+      pushTo(ResetPasswordScreen(
+        email: email,
+      ));
     } else {
-      print(res);
-      Dialogs.showErrorSnackbar(message: res.error!.message!);
-      // Dialogs.showErrorSnackbar(message: res.error!.detail!);
+      Dialogs.showErrorSnackbar(message: res.error!.data["data"]["detail"]);
     }
   }
 
-  Future<void> resetPassword({
-    required String? email, 
-    required String? resetToken, 
-    required String? newPassword
-}) async {
+  Future<void> resetPassword(
+      {required String? email,
+      required String? resetToken,
+      required String? newPassword}) async {
     Dialogs.showLoadingDialog();
     final res = await state.resetPassword(
-      resetToken: resetToken!,
-      email: email!,
-      newPassword: newPassword!
-    );
+        resetToken: resetToken!, email: email!, newPassword: newPassword!);
     pop();
     if (res.valid) {
-      Dialogs.showSuccessSnackbar(
-          message: "Password reset successfully");
+      Dialogs.showSuccessSnackbar(message: "Password reset successfully");
       pushToAndClearStack(const LoginScreen());
     } else {
-      print(res);
-      Dialogs.showErrorSnackbar(message: res.error!.message!);
-      // Dialogs.showErrorSnackbar(message: res.error!.detail!);
+      Dialogs.showErrorSnackbar(message: res.error!.data["data"]["detail"]);
     }
   }
-
 }
 
 class AuthRepo {
@@ -131,7 +123,7 @@ class AuthRepo {
         state: state ?? this.state);
   }
 
-  Future<ResponseModel<AuthResponseModel>> loginWithEmailAndPassword({
+  Future<ResponseModel> loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -143,9 +135,6 @@ class AuthRepo {
     );
 
     final int statusCode = response.statusCode ?? 000;
-
-    print("here is the response: $response");
-
     if (statusCode >= 200 && statusCode <= 300) {
       return ResponseModel<AuthResponseModel>(
         valid: true,
@@ -154,7 +143,7 @@ class AuthRepo {
         data: AuthResponseModel.fromJson(response.data),
       );
     }
-
+//
     return ResponseModel(
       error: ErrorModel.fromJson(response.data),
       statusCode: statusCode,
@@ -191,13 +180,13 @@ class AuthRepo {
     }
 
     return ResponseModel(
-      error: ErrorModel.fromJson(response.data['detail']),
+      error: ErrorModel.fromJson(response.data),
       statusCode: statusCode,
       message: response.data['message'],
     );
   }
 
-  Future<ResponseModel<ValidateModel>> validateEmail({
+  Future<ResponseModel> validateEmail({
     required String email,
   }) async {
     Response response = await _apiService.runCall(
@@ -213,27 +202,35 @@ class AuthRepo {
     final int statusCode = response.statusCode ?? 000;
 
     if (statusCode >= 200 && statusCode <= 300) {
-      return ResponseModel<ValidateModel>(
-        valid: true,
-        statusCode: statusCode,
-        message: response.statusMessage,
-        data: ValidateModel.fromJson(response.data),
-      );
+      if (response.data != null) {
+        return ResponseModel<ValidateModel>(
+          valid: true,
+          statusCode: statusCode,
+          message: response.statusMessage,
+          //type null is not a subtype of yadda yada - thats because when we gt a 201 it returns null lol
+          data: ValidateModel.fromJson(response.data),
+        );
+      } else {
+        return ResponseModel<ValidateModel>(
+          valid: true,
+          statusCode: statusCode,
+          message: response.statusMessage,
+          data: ValidateModel(),
+        );
+      }
     }
-    print("here is the response: ${response}");
-    print("here is the response: ${response.data}");
 
     return ResponseModel(
-      error: ErrorModel.fromJson(response.data),
+      error: ErrorModel.fromJson(response.data ?? ''),
       statusCode: statusCode,
-      message: response.data['message'],
+      message: response.data != null ? response.data['message'] : '',
     );
   }
-  Future<ResponseModel<ValidateModel>> resetPassword({
-    required String email,
-    required String resetToken,
-    required String newPassword
-  }) async {
+
+  Future<ResponseModel<ValidateModel>> resetPassword(
+      {required String email,
+      required String resetToken,
+      required String newPassword}) async {
     Response response = await _apiService.runCall(
       _apiService.dio.post(
         '${AppEndpoints.baseUrl}/reset-password',
@@ -256,9 +253,6 @@ class AuthRepo {
         data: ValidateModel.fromJson(response.data),
       );
     }
-    print("here is the response: ${response}");
-    print("here is the response: ${response.data}");
-
     return ResponseModel(
       error: ErrorModel.fromJson(response.data),
       statusCode: statusCode,

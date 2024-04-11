@@ -21,7 +21,7 @@ class ImageView extends StatefulWidget {
   }) : this.imageWidget(
           ExtendedImage.network(
             url,
-            fit:BoxFit.fitWidth,
+            fit: BoxFit.fitWidth,
           ),
           key: key,
           minScale: minScale,
@@ -29,7 +29,6 @@ class ImageView extends StatefulWidget {
           doubleTapZoomable: doubleTapZoomable,
           onScaleChanged: onScaleChanged,
         );
-
   const ImageView.imageWidget(
     this.imageWidget, {
     super.key,
@@ -162,18 +161,19 @@ class ImageViewerDismissibleDialog extends StatefulWidget {
   final String closeButtonTooltip;
   final Color closeButtonColor;
 
-  const ImageViewerDismissibleDialog(
-      {super.key,
-       required this.url,
-      this.immersive = true,
-      this.onPageChanged,
-      this.onViewerDismissed,
-      this.useSafeArea = false,
-      this.swipeDismissible = false,
-      this.doubleTapZoomable = false,
-      required this.backgroundColor,
-      required this.closeButtonTooltip,
-      required this.closeButtonColor,});
+  const ImageViewerDismissibleDialog({
+    super.key,
+    required this.url,
+    this.immersive = true,
+    this.onPageChanged,
+    this.onViewerDismissed,
+    this.useSafeArea = false,
+    this.swipeDismissible = false,
+    this.doubleTapZoomable = false,
+    required this.backgroundColor,
+    required this.closeButtonTooltip,
+    required this.closeButtonColor,
+  });
 
   @override
   State<ImageViewerDismissibleDialog> createState() =>
@@ -186,7 +186,6 @@ class _ImageViewerDismissibleDialogState
   /// whether the current image is zoomed in (scale > 0) or not.
   DismissDirection _dismissDirection = DismissDirection.down;
 
-  /// This is needed because of https://github.com/thesmythgroup/easy_image_viewer/issues/27
   /// When no global key was used, the state was re-created on the initial zoom, which
   /// caused the new state to have _pagingEnabled set to true, which in turn broke
   /// paning on the zoomed-in image.
@@ -205,8 +204,6 @@ class _ImageViewerDismissibleDialogState
         child: Dialog(
             backgroundColor: widget.backgroundColor,
             insetPadding: const EdgeInsets.all(0),
-            // We set the shape here to ensure no rounded corners allow any of the
-            // underlying view to show. We want the whole background to be covered.
             shape:
                 const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             child: Stack(
@@ -214,15 +211,15 @@ class _ImageViewerDismissibleDialogState
                 alignment: Alignment.center,
                 children: <Widget>[
                   ImageView(
-                    url: widget.url,
-                    doubleTapZoomable: widget.doubleTapZoomable,
+                      url: widget.url,
+                      doubleTapZoomable: widget.doubleTapZoomable,
                       onScaleChanged: (scale) {
-                    setState(() {
-                      _dismissDirection = scale <= 1.0
-                          ? DismissDirection.down
-                          : DismissDirection.none;
-                    });
-                  }),
+                        setState(() {
+                          _dismissDirection = scale <= 1.0
+                              ? DismissDirection.down
+                              : DismissDirection.none;
+                        });
+                      }),
                   Positioned(
                       top: 30,
                       right: 5,
@@ -234,8 +231,9 @@ class _ImageViewerDismissibleDialogState
                           Navigator.of(context).pop();
                           _handleDismissal();
                         },
-                      ))
-                ])));
+                      )),
+                ]))
+                );
 
     if (widget.swipeDismissible) {
       return Dismissible(
@@ -255,9 +253,6 @@ class _ImageViewerDismissibleDialogState
     }
   }
 
-  // Internal function to be called whenever the dialog
-  // is dismissed, whether through the Android back button,
-  // through the "x" close button, or through swipe-to-dismiss.
   void _handleDismissal() {
     if (widget.immersive) {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -270,9 +265,7 @@ const _defaultBackgroundColor = Colors.black;
 const _defaultCloseButtonColor = Colors.white;
 const _defaultCloseButtonTooltip = 'Close';
 
-Future<Dialog?> showImageViewer(
-    BuildContext context, 
-    String url,
+Future<Dialog?> showImageViewer(BuildContext context, String url,
     {bool immersive = true,
     bool useSafeArea = false,
     bool swipeDismissible = false,

@@ -1,21 +1,30 @@
+import 'package:flutter/foundation.dart';
 import 'package:taro_leaf_blight/core/utils/extensions/date_extensions.dart';
 import 'package:taro_leaf_blight/features/detection/models/detection_model.dart';
 import 'package:taro_leaf_blight/features/detection/provider/detection_providers.dart';
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
+import 'package:taro_leaf_blight/packages/global_packages.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 import 'package:taro_leaf_blight/widgets/custominfo_widget.dart';
+import 'package:taro_leaf_blight/widgets/image_viewer.dart';
 
 class DetectionInfoScreen extends ConsumerWidget {
   final String detectionId;
-  const DetectionInfoScreen(
-      {required this.detectionId, super.key,});
+  const DetectionInfoScreen({
+    required this.detectionId,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var detection = ref.watch(getDetectionByIdProvider(detectionId));
-    
+
     return Scaffold(
-      appBar: AppBar(leading: backButton(context)),
+      appBar: AppBar(
+        leading: backButton(context),
+        elevation: 10,
+        backgroundColor: AppColors.primary,
+      ),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
@@ -26,29 +35,26 @@ class DetectionInfoScreen extends ConsumerWidget {
                     return ListView(
                       shrinkWrap: true,
                       children: [
-                        Container(
-                            height: 290.h,
-                            child: ExtendedImageGesturePageView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 1,
-                              itemBuilder: (BuildContext context, int index) {
-                                Widget image = ClipRRect(
-                                   borderRadius: BorderRadius.circular(20),
-                                  child: ExtendedImage.network(
-                                      data.data!.imageUrl
-                                     ,
-                                    fit: BoxFit.cover,
-                                    mode: ExtendedImageMode.gesture,
-                                    
-                                    
-                                  ),
-                                );
-                                return Hero(
-                                  tag: index.toString(),
-                                  child: image,
-                                );
-                              },
-                            )),
+                        GestureDetector(
+                          onTap: () => showImageViewer(
+                            context,
+                            data.data!.imageUrl,
+                             swipeDismissible: true,
+                              doubleTapZoomable: true,
+                              // when immersive == true it gets janky swithcing from SystemOverlay modes 
+                              immersive: false
+                          ),
+                          child: Container(
+                              height: 290.h,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: ExtendedImage.network(
+                                  data.data!.imageUrl,
+                                  fit: BoxFit.cover,
+                                  mode: ExtendedImageMode.gesture,
+                                ),
+                              )),
+                        ),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -76,7 +82,8 @@ class DetectionInfoScreen extends ConsumerWidget {
                               CustomInfoWidget(
                                 color: Colors.white,
                                 labelText: "Date",
-                                data:  DateTime.parse(data.data!.createdAt).formatDateAndTime,
+                                data: DateTime.parse(data.data!.createdAt)
+                                    .formatDateAndTime,
                               ),
                             ]),
                       ],

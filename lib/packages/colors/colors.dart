@@ -4,17 +4,30 @@ class AppColors {
   AppColors._();
 
   /// Primary colors
-  static const Color primary900 = Color(0xFF001331);
-  static const Color primary800 = Color(0xFF011D4A);
-  static const Color primary700 = Color(0xFF012762);
-  static const Color primary600 = Color(0xFF01307B);
-  static const Color primary500 = Color(0xFF013A93);
-  static const Color primary = Color(0xFF013A93);
-  static const Color primary400 = Color(0xFF2B5BA5);
-  static const Color primary300 = Color(0xFF567CB7);
-  static const Color primary200 = Color(0xFFCCD8E9);
-  static const Color primary100 = Color(0xFFAABDDB);
-  static const Color primary50 = Color(0xFFCCD8E9);
+  // static const Color primary900 = Color(0xFF001331);
+  // static const Color primary800 = Color(0xFF011D4A);
+  // static const Color primary700 = Color(0xFF012762);
+  // static const Color primary600 = Color(0xFF01307B);
+  // static const Color primary500 = Color(0xFF013A93);
+  // static const Color primary = Color(0xFF013A93);
+  // static const Color primary400 = Color(0xFF2B5BA5);
+  // static const Color primary300 = Color(0xFF567CB7);
+  // static const Color primary200 = Color(0xFFCCD8E9);
+  // static const Color primary100 = Color(0xFFAABDDB);
+  // static const Color primary50 = Color(0xFFCCD8E9);
+
+  /// Success colors
+  static const Color primary900 = Color(0xFF102A19);
+  static const Color primary800 = Color(0xFF1B4729);
+  static const Color primary700 = Color(0xFF21703A);
+  static const Color primary600 = Color(0xFF307F4A);
+  static const Color primary = Color(0xFF307F4A);
+  static const Color primary500 = Color(0xFF01A63E);
+  static const Color primary400 = Color(0xFF5EC37F);
+  static const Color primary300 = Color(0xFF8CD4A4);
+  static const Color primary200 = Color(0xFFBAE5C8);
+  static const Color primary100 = Color(0xFFD1EEDB);
+  static const Color primary50 = Color(0xFFE8F6ED);
 
   /// Success colors
   static const Color success900 = Color(0xFF102A19);

@@ -3,7 +3,6 @@ import 'package:taro_leaf_blight/features/detection/models/detection_model.dart'
 import 'package:taro_leaf_blight/packages/packages.dart';
 import 'package:taro_leaf_blight/widgets/dialog_parameters_widget.dart';
 
-// lets are not tampering with our service!
 
 class DetectionService {
   final AuthNotifier notifier;

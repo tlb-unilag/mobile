@@ -1,9 +1,16 @@
-import 'package:camera/camera.dart';
+import 'dart:async' as async;
+import 'package:flutter/foundation.dart';
+import 'package:taro_leaf_blight/core/enviroment.dart';
+import 'package:taro_leaf_blight/core/error_handling/error_boundary.dart';
+import 'package:taro_leaf_blight/core/error_handling/error_reporter.dart';
 import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
-import 'package:taro_leaf_blight/widgets/dialog_parameters_widget.dart';
+import 'package:taro_leaf_blight/core/utils/app_device_information.dart';
+import 'package:taro_leaf_blight/core/utils/app_log.dart';
+import 'package:taro_leaf_blight/widgets/app_crash_error_view.dart';
 import 'features/home/presentation/auth_start.dart';
 import 'features/home/presentation/home.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
+import 'package:universal_io/io.dart' as io;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,8 +19,39 @@ void main() async {
 
   await dotenv.load();
 
+  final ReporterClient reporterClient;
+
+  //  final DeviceInformation deviceInformation = await AppDeviceInformation.initialize();
+
+  reporterClient = _ReporterClient(
+    // deviceInformation: deviceInformation,
+    environment: environment,
+  );
+
+  final ErrorReporter errorReporter = ErrorReporter(client: reporterClient);
+  AppLog.init(
+    logFilter: () => kDebugMode && !environment.isTesting,
+    exceptionFilter: (Object error) {
+      const List<Type> ignoreTypes = <Type>[
+        io.SocketException,
+        io.HandshakeException,
+        async.TimeoutException,
+      ];
+      return !kDebugMode && !ignoreTypes.contains(error.runtimeType);
+    },
+    onException: errorReporter.report,
+    onLog: (Object? message) => debugPrint(message?.toString()),
+  );
+
   runApp(
-    const ProviderScope(child: MyApp()),
+    ProviderScope(
+        child: ErrorBoundary(
+      isReleaseMode: !environment.isDebugging,
+      errorViewBuilder: (_) => const AppCrashErrorView(),
+      onException: AppLog.e,
+      onCrash: errorReporter.reportCrash,
+      child: const MyApp(),
+    )),
   );
 }
 
@@ -60,7 +98,6 @@ class MyApp extends StatelessWidget {
                   // scaffoldBackgroundColor: Colors.grey[900],
                   scaffoldBackgroundColor: Colors.white,
                   bottomAppBarTheme: const BottomAppBarTheme(
-                    
                     color: AppColors.primary,
                   ),
                   appBarTheme: AppBarTheme(
@@ -211,3 +248,46 @@ class TokenRouter extends StatelessWidget {
   }
 }
 
+class _ReporterClient implements ReporterClient {
+  _ReporterClient({
+    // required this.deviceInformation,
+    required this.environment,
+  });
+
+  // final DeviceInformation deviceInformation;
+  final Environment environment;
+  final Set<_ReporterErrorEvent> _events = <_ReporterErrorEvent>{};
+
+  @override
+  async.FutureOr<void> report(
+      {required StackTrace stackTrace,
+      required Object error,
+      Object? extra}) async {
+    _events.add(
+      (
+        error: error,
+        stackTrace: stackTrace,
+        environment: environment.name.toUpperCase(),
+        // deviceInformation: deviceInformation.toMap(),
+        extra: extra is Map
+            ? extra as Map<String, dynamic>?
+            : <String, dynamic>{'extra': extra},
+      ),
+    );
+  }
+
+  @override
+  // TODO(Ibukun): handle crash
+  async.FutureOr<void> reportCrash(FlutterErrorDetails details) {}
+
+  @override
+  void log(Object object) => AppLog.i(object);
+}
+
+typedef _ReporterErrorEvent = ({
+  Object error,
+  StackTrace stackTrace,
+  String environment,
+  // Map<String, String> deviceInformation,
+  Map<String, dynamic>? extra,
+});

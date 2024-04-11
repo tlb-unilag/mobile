@@ -1,17 +1,13 @@
-
+import 'package:taro_leaf_blight/core/utils/extensions/string_extensions.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
 import 'package:taro_leaf_blight/core/utils/constants/strings.dart';
 import 'package:taro_leaf_blight/core/utils/validators.dart';
 import 'package:taro_leaf_blight/features/auth/providers/auth_provider.dart';
 
-
 class ResetPasswordScreen extends ConsumerStatefulWidget {
   final String email;
-  const ResetPasswordScreen({
-    required this.email,
-    super.key
-  });
+  const ResetPasswordScreen({required this.email, super.key});
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _ResetPasswordScreenState();
@@ -30,9 +26,14 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   @override
   void dispose() {
     super.dispose();
-   _newPasswordController.dispose();
-   _confirmPasswordController.dispose();
-   _resetPasswordTokenController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
+    _resetPasswordTokenController.dispose();
+  }
+
+
+  isPasswordMatch() {
+    return (value) => value == _newPasswordController.text;
   }
 
   @override
@@ -40,10 +41,10 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          leading: backButton(context),
-          elevation: 10,
-          backgroundColor: AppColors.primary,
-        ),
+        leading: backButton(context),
+        elevation: 10,
+        backgroundColor: AppColors.primary,
+      ),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -51,54 +52,55 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(AppStrings.enteryouremail,
-                  style: CustomTextStyle.textextraBold24.w700.black),
-              // 12.gap,
               30.gap,
               AppInput(
                 controller: _resetPasswordTokenController,
-                labelText: 'Enter the token sent to ${widget.email}',
+                labelText: 'Enter the token sent to ${widget.email.maskEmailAddress()}',
                 hintText: AppStrings.enterPasswordResetToken,
                 validator: Validator().isNotEmpty().validate,
                 errorText: resetPasswordTokenError,
                 keyboardType: TextInputType.text,
               ),
-              AppInput(
+              30.gap,
+              AppInput.password(
                 controller: _newPasswordController,
-                labelText: AppStrings.password,
+                labelText: "Enter new ${AppStrings.password}",
                 hintText: AppStrings.enterNewPassword,
                 validator: Validator().isPassword().isNotEmpty().validate,
                 errorText: newPasswordError,
                 keyboardType: TextInputType.visiblePassword,
               ),
-              AppInput(
+              30.gap,
+              AppInput.password(
                 controller: _confirmPasswordController,
-                labelText: AppStrings.password,
+                labelText: "Confirm ${AppStrings.password}",
                 hintText: AppStrings.confirmPassword,
-                validator: Validator().isPassword().isNotEmpty().validate,
+                validator: Validator()
+                    .isNotEmpty()
+                    .custom(isPasswordMatch(),"Passwords do not match")
+                    .validate,
                 errorText: confirmPasswordError,
                 keyboardType: TextInputType.visiblePassword,
               ),
-              24.gap,
+              30.gap,
               AppButton(
-                  onPressed: emailError == null || 
-                  resetPasswordTokenError == null || 
-                  confirmPasswordError == null || 
-                  newPasswordError == null 
+                  onPressed: emailError == null ||
+                          resetPasswordTokenError == null ||
+                          confirmPasswordError == null ||
+                          newPasswordError == null &&
+                              _newPasswordController.text ==
+                                  _confirmPasswordController.text
                       ? () {
                           FocusScope.of(context).unfocus();
                           if (_formKey.currentState!.validate()) {
-                            ref
-                                .read(authProvider.notifier).resetPassword(
-                                  email: widget.email, 
-                                  resetToken: _resetPasswordTokenController.text, 
-                                  newPassword: _newPasswordController.text
-                                );
+                            ref.read(authProvider.notifier).resetPassword(
+                                email: widget.email,
+                                resetToken: _resetPasswordTokenController.text,
+                                newPassword: _newPasswordController.text);
                           }
                         }
                       : null,
-                    label: AppStrings.sendToken
-                  ),
+                  label: AppStrings.resetPassword),
             ],
           ),
         ),

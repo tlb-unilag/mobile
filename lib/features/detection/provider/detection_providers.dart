@@ -5,10 +5,13 @@ import 'package:taro_leaf_blight/features/detection/service/detection_service.da
 import 'package:taro_leaf_blight/features/info/presentation/info.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
+bool isLoading = false;
 
 Future<ResponseModel<SingleDetectionResponseModel>> detectOneImage(
   String? imageUrl,
 ) async {
+  isLoading = true;
+
   Dialogs.showLoadingDialog(
       child: SizedBox(
     height: 100.h,
@@ -21,8 +24,9 @@ Future<ResponseModel<SingleDetectionResponseModel>> detectOneImage(
       ],
     ),
   ));
-  ResponseModel<SingleDetectionResponseModel> res = await detectionService.detectOneImage(imageUrl: imageUrl);
-  pop();
+  ResponseModel<SingleDetectionResponseModel> res =
+      await detectionService.detectOneImage(imageUrl: imageUrl);
+  // pop();
   var detectionId = res.data?.detectionId;
   if (res.valid) {
     pushTo(DetectionInfoScreen(
@@ -40,6 +44,7 @@ Future<ResponseModel<SingleDetectionResponseModel>> detectOneImage(
               detectOneImage(imageUrl);
             }));
   }
+  isLoading = false;
   return res;
 }
 

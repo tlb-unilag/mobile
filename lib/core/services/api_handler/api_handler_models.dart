@@ -5,6 +5,7 @@ class ResponseModel<T> {
   late String? message = '';
   late String token;
   late T? data;
+  late String? detail;
 
   ResponseModel({valid, message, statusCode, this.data, error, token}) {
     this.valid = valid ?? false;
@@ -19,36 +20,33 @@ class ErrorModel {
   String? errorCode;
   String? message;
   dynamic errorField;
-  String? detail;
-  // String? token;
-
-  ErrorModel(
-      {this.errorCode,
-      this.message,
-      this.errorField,
-      // this.token,
-      this.detail});
+  dynamic data;
+  ErrorModel({this.errorCode, this.message, this.errorField, this.data });
 
   @override
   String toString() {
-    return '{errorCode: $errorCode, message: $message, detail: $detail}';
+    return '{errorCode: $errorCode, message: $message, detail: $data}';
   }
 
   factory ErrorModel.fromJson(dynamic data) {
-    if (data is String) {
-      return ErrorModel(
-          errorCode: '', message: data, 
-          errorField: '', 
-          detail:''
-          // token: ''
-          );
-    }
     return ErrorModel(
         errorCode: data['errorCode'] ?? '',
         message: data['message'] ?? '',
         errorField: data['errorField'] ?? '',
-        detail: data['detail'] ?? ''
-        // token: data['token'] ?? ''
+        data: data 
+      );
+  }
+}
+
+class ErrorData {
+  final dynamic data;
+
+  ErrorData({required this.data});
+
+  factory ErrorData.fromJson(Map<String, dynamic> json) {
+    return ErrorData(
+      data: json['detail'] ?? '',
     );
   }
 }
+

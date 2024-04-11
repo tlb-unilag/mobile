@@ -137,24 +137,25 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
   Widget _buildDetectImageButton(File? file) {
     return AppButton(
         label: "Detect Image",
-        onPressed: () async {
-          bool status = await InternetConnection().hasInternetAccess;
-          switch (status) {
-            case true:
-              await cloudinaryService.uploadImage(file!).then((value) {
+        onPressed: () {
+          // bool status = await InternetConnection().hasInternetAccess;
+          // switch (status) {
+          //   case true:
+          //     await 
+              cloudinaryService.uploadImage(file!).then((value) {
                 if (value.data != null) {
                   detectOneImage(value.data?.url);
                 }
               });
-              break;
-            case false:
-              print("disconnected");
-              Dialogs.showErrorSnackbar(
-                  message:
-                      "You do not have internet access, please try again later");
-              break;
-          }
-        });
+            //   break;
+            // case false:
+            //   Dialogs.showErrorSnackbar(
+            //       message:
+            //           "You do not have internet access, please try again later");
+            //   break;
+          // }
+        }
+      );
   }
 
   @override
@@ -185,4 +186,3 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
   }
 }
 
-// upload image -> a loading spinner is shown with the text -> uploading image (lets add a progress bar)

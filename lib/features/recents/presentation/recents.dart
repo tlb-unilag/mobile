@@ -1,8 +1,5 @@
-// import 'package:camera/camera.dart';
-// import 'package:taro_leaf_blight/features/home/presentation/info.dart';
-
 export 'package:extended_image/extended_image.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:taro_leaf_blight/core/utils/extensions/date_extensions.dart';
 import 'package:taro_leaf_blight/features/detection/models/detection_model.dart';
 import 'package:taro_leaf_blight/features/detection/provider/detection_providers.dart';
@@ -18,6 +15,13 @@ class RecentsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Future<int> fetchUserData() async {
+    //   await Future.delayed(const Duration(seconds: 2));
+    //   throw Exception('Error fetching userssss data');
+    //   // return 42; // Simulating a successful response
+    // }
+
+    // fetchUserData();
     var detections = ref.watch(getAllDetectionsProvider);
     return RefreshIndicator.adaptive(
       color: AppColors.primary,
@@ -26,7 +30,7 @@ class RecentsScreen extends ConsumerWidget {
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16).copyWith(top:20),
+              padding: const EdgeInsets.all(16).copyWith(top: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -112,14 +116,16 @@ class DetectionInfoWidget extends StatefulWidget {
 class _DetectionInfoWidgetState extends State<DetectionInfoWidget> {
   @override
   Widget build(BuildContext context) {
-        String dateTime = DateTime.parse(widget.detectionInfo.createdAt).formatDateAndTime;
+    String dateTime =
+        DateTime.parse(widget.detectionInfo.createdAt).formatDateAndTime;
     return InkWell(
       onTap: () {
         pushTo(DetectionInfoScreen(
           detectionId: widget.detectionInfo.detectionId,
         ));
       },
-      child: Column(children: [
+      child: Column(
+        children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Container(
@@ -130,48 +136,6 @@ class _DetectionInfoWidgetState extends State<DetectionInfoWidget> {
               fit: BoxFit.cover,
               cache: true,
               widget.detectionInfo.imageUrl,
-              // loadStateChanged: (ExtendedImageState state) {
-              // switch (state.extendedImageLoadState) {
-              //   case LoadState.loading:
-              //     _controller.reset();
-              //     return const CircularProgressIndicator.adaptive();
-              //   case LoadState.completed:
-              //     _controller.forward();
-              //     return FadeTransition(
-              //       opacity: _controller,
-              //       child: ExtendedRawImage(
-              //         image: state.extendedImageInfo?.image,
-              //         width: 370.w,
-              //         height: 290.h,
-              //       ),
-              //     );
-              //   case LoadState.failed:
-              //     _controller.reset();
-              //     return GestureDetector(
-              //       child: Stack(
-              //         fit: StackFit.expand,
-              //         children: <Widget>[
-              //           Image.asset(
-              //             "assets/failed.jpg",
-              //             fit: BoxFit.fill,
-              //           ),
-              //           const Positioned(
-              //             bottom: 0.0,
-              //             left: 0.0,
-              //             right: 0.0,
-              //             child: Text(
-              //               "load image failed, click to reload",
-              //               textAlign: TextAlign.center,
-              //             ),
-              //           )
-              //         ],
-              //       ),
-              //       onTap: () {
-              //         state.reLoadImage();
-              //       },
-              //     );
-              // }
-              // }
             ),
           ),
         ),
@@ -190,5 +154,3 @@ class _DetectionInfoWidgetState extends State<DetectionInfoWidget> {
     );
   }
 }
-
-//https://res.cloudinary.com/ogbanugot/image/upload/v1706989569/testl21_e7pr6c.png

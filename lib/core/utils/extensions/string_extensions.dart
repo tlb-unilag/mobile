@@ -37,3 +37,21 @@ extension NullStringExtensions on String? {
     return "${this![0].toUpperCase()}${this!.substring(1).toLowerCase()}";
   }
 }
+
+extension EmailMasking on String {
+  String maskEmailAddress() {
+    if (isEmpty) return this;
+
+    List<String> parts = split('@');
+    String localPart = parts[0];
+    String domainPart = parts[1];
+
+    if (localPart.length <= 3) return this;
+
+    String maskedLocalPart = localPart.substring(0, 1) +
+        '*' * 6 +
+        localPart.substring(localPart.length - 1);
+
+    return '$maskedLocalPart@$domainPart';
+  }
+}

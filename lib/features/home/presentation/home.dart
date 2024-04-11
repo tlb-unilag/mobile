@@ -7,11 +7,6 @@ import 'package:taro_leaf_blight/packages/packages.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
-
-    void _onItemTapped(int index) {
-        
-    }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentPageIndex = ref.watch(homeCurrentPageIndexProvider);

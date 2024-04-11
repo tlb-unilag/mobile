@@ -1,5 +1,5 @@
 class AppStrings {
-  static const login = 'login';
+  static const login = 'Login';
   static const signup = 'Sign Up';
   static const createaccount = 'Create account';
   static const getstarted = 'Get Started';
@@ -13,13 +13,12 @@ class AppStrings {
       'Detect taro leaf blight in your plants easily with our app';
   static const home = 'Home';
   static const capture = 'Capture';
-  static const profile = 'Profile';
   static const detect = 'Detect';
   static const email = 'Email';
   static const password = 'Password';
   static const forgotPassword = 'Forgot Password?';
   static const sendToken = 'Send Token';
-  static const enterNewPassword = "Enter new Password";
+  static const enterNewPassword = "Enter New Password";
   static const enterPasswordResetToken = "Enter password reset token";
   static const confirmPassword = "Confirm Password";
   static const tokenNotSent = "Didn't receive a token?";
@@ -35,4 +34,18 @@ class AppStrings {
   static const changePassword = "Change Password";
   static const updateDetails = "Update Details";
   static const termsAndConditions = "Terms and conditions";
+  static const resetPassword = "Reset Password";
+  static const help = "Help";
+  static const helpText = "Get in touch with us";
+  static const legal = "Legal";
+  static const legalText = "Legal Information";
+  static const profile = 'Profile';
+  static const profileSettings = "Profile Settings";
+  static const editYourProfile = "Edit Your Profile";
+  static const securitySettings = "Security settings";
+  static const secureYourAccount = "Secure Your Account";
+  static const forMoreInformation = "For More Information";
+  static const emailAddress = "taroleafblight@gmail.com";
+  static const failedToLoadDetails = "Failed to load user details";
+  static const retry = "Retry";
 }

@@ -43,12 +43,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 ),
               ],
             ),
-            const Center(
-              child: CircleAvatar(
-                  radius: 150,
-                  backgroundImage: AssetImage(
-                    'assets/images/taro_leaf_blight.png',
-                  )),
+            Center(
+              child: Image.asset(
+                'assets/images/tlblogo.png',
+              ),
             ),
             38.gap,
             Center(

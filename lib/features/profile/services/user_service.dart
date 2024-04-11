@@ -1,22 +1,10 @@
-import 'package:flutter/foundation.dart';
-import 'package:taro_leaf_blight/features/profile/models/user_request_model.dart';
+import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
+import 'package:taro_leaf_blight/features/auth/presentation/login.dart';
+import 'package:taro_leaf_blight/features/profile/models/user_response_model.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
 
 class UserService {
   UserService();
-  Future<ResponseModel> getUser(
-      {required String? email, required String? password}) async {
-    Dialogs.showLoadingDialog();
-    ResponseModel res = await userRepo.getUser();
-    pop();
-    if (res.valid) {
-      return res;
-    } else {
-      Dialogs.showErrorSnackbar(message: res.error!.message!);
-    }
-    return res;
-  }
-
   Future<void> updateUser(
       {required String? email,
       required String? country,
@@ -26,13 +14,16 @@ class UserService {
         email: email!, country: country!, countryState: countryState!);
     pop();
     if (res.valid) {
+      if (email != LocalData.email) {
+        pushToAndClearStack(const LoginScreen());
+      }
+      LocalData.setEmail(email);
+      LocalData.setCountry(country);
+      LocalData.setCountryState(countryState);
       Dialogs.showSuccessSnackbar(message: "Data Updated successfuly");
     } else {
-      print(res);
-      // if (kDebugMode) {
-      print(res.message);
       // }
-      Dialogs.showErrorSnackbar(message: res.error!.message!);
+      Dialogs.showErrorSnackbar(message: res.error!.data["data"]["detail"]);
     }
   }
 }
@@ -80,7 +71,7 @@ class UserRepo {
     required String countryState,
   }) async {
     Response response = await _apiService.runCall(
-      _apiService.dio.put('${AppEndpoints.baseUrl}/user/',
+      _apiService.dio.put('${AppEndpoints.baseUrl}/user',
           data: {"email": email, "country": country, "state": countryState}),
     );
 
