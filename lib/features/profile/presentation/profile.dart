@@ -5,9 +5,11 @@ import 'package:taro_leaf_blight/features/auth/presentation/email_verification.d
 import 'package:taro_leaf_blight/features/auth/providers/auth_provider.dart';
 import 'package:taro_leaf_blight/features/profile/models/user_response_model.dart';
 import 'package:taro_leaf_blight/features/profile/presentation/update_details.dart';
+import 'package:taro_leaf_blight/features/profile/providers/appinfo_provider.dart';
 import 'package:taro_leaf_blight/features/profile/providers/user_provider.dart';
 import 'package:taro_leaf_blight/features/profile/services/email_service.dart';
 import 'package:taro_leaf_blight/packages/packages.dart';
+import 'package:taro_leaf_blight/src/version.dart';
 import 'package:taro_leaf_blight/widgets/profile_settings_panel.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -65,7 +67,7 @@ class ProfileScreen extends ConsumerWidget {
                               emailService.sendFeedbackEmail();
                             }))),
                   ),
-                  36.gap,
+                  AppVersion(),
                   AppButton(
                     width: 200.w,
                     label: 'Sign Out',
@@ -103,6 +105,92 @@ class SettingsPage extends StatelessWidget {
     );
   }
 }
+
+
+class AppVersion extends StatelessWidget {
+  const AppVersion({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Text(
+                'Version: ($packageVersion)',
+                style: CustomTextStyle.subtitleSmall.withColor(Colors.grey),
+              ),
+            ),
+      );
+  }
+}
+
+
+
+
+
+// class AppVersion extends ConsumerWidget {
+//   const AppVersion({super.key});
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//      var appInfo = ref.watch(appInfoProvider);
+//     return appInfo.when(
+//       skipLoadingOnRefresh: false,
+//       data: ( data) {
+//         return Column(
+//           children: [
+//             10.gap,
+//             const Text(''),
+//             10.gap,
+//             const Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 const Text(''),
+//               ],
+//             ),
+//           ],
+//         );
+//       },
+//       loading: () {
+//         return Skeletonizer(
+//           child: Column(
+//             children: [
+//               const Text("qewrwteywuwiuwowoeueuyeie"),
+//               10.gap,
+//               const Text("qtqywiwuweue, qyququqiq")
+//             ],
+//           ),
+//         );
+//       },
+//       error: (error, stacktrace) {
+//         print(error);
+//         return Text.rich(
+//           TextSpan(
+//             children: [
+//               TextSpan(
+//                 text: AppStrings.failedToLoadDetails,
+//                 style: CustomTextStyle.textmedium16.withColorHex(0xFF17171B),
+//               ),
+//               TextSpan(
+//                 text: '  ${AppStrings.retry}',
+//                 style: CustomTextStyle.textmedium16.w500
+//                     .withColor(AppColors.primary),
+//                 recognizer: TapGestureRecognizer()
+//                   ..onTap = () {
+//                     ref.invalidate(userProvider);
+//                   },
+//               ),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+    
+//   }
+// }
+
+
+
 
 class UserDetails extends ConsumerWidget {
   const UserDetails({super.key});
