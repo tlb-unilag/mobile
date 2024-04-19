@@ -1,8 +1,5 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 // import 'package:app_settings/app_settings.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
 import 'package:taro_leaf_blight/features/capture/service/image_picker_service.dart';
@@ -29,7 +26,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
       // cache it here
       file = croppedImage;
     });
-     if (croppedImage != null) {
+    if (croppedImage != null) {
       LocalData.saveImageFile(croppedImage.path);
     }
   }
@@ -141,48 +138,46 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
           // bool status = await InternetConnection().hasInternetAccess;
           // switch (status) {
           //   case true:
-          //     await 
-              cloudinaryService.uploadImage(file!).then((value) {
-                if (value.data != null) {
-                  detectOneImage(value.data?.url);
-                }
-              });
-            //   break;
-            // case false:
-            //   Dialogs.showErrorSnackbar(
-            //       message:
-            //           "You do not have internet access, please try again later");
-            //   break;
+          //     await
+          cloudinaryService.uploadImage(file!).then((value) {
+            if (value.data != null) {
+              detectOneImage(value.data?.url);
+            }
+          });
+          //   break;
+          // case false:
+          //   Dialogs.showErrorSnackbar(
+          //       message:
+          //           "You do not have internet access, please try again later");
+          //   break;
           // }
-        }
-      );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16).copyWith(top: 0),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Container(
-              height: context.screenHeight,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildImagePreview(file, context),
-                  10.gap,
-                  _buildImageSelectionButton(file),
-                  10.gap,
-                  if (_isImageSelected()) _buildDetectImageButton(file),
-                ],
-              ),
-            )
-          ],
+        body: Padding(
+          padding: const EdgeInsets.all(16).copyWith(top: 0),
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Container(
+                height: context.screenHeight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildImagePreview(file, context),
+                    10.gap,
+                    _buildImageSelectionButton(file),
+                    10.gap,
+                    if (_isImageSelected()) _buildDetectImageButton(file),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
     );
   }
 }
-
