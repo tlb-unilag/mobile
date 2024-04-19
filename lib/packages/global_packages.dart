@@ -21,3 +21,4 @@ export 'package:flutter/gestures.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:crypto/crypto.dart';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
+// export 'package:package_info_plus/package_info_plus.dart';

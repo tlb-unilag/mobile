@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:taro_leaf_blight/core/services/local_data/local_data.dart';
 import 'package:taro_leaf_blight/core/utils/constants/strings.dart';
 import 'package:taro_leaf_blight/core/utils/validators.dart';
