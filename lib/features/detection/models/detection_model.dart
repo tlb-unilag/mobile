@@ -9,7 +9,8 @@ class SingleDetectionResponseModel {
   int taroHealthy;
   String? userId;
   String createdAt;
-
+  String solution;
+  
   SingleDetectionResponseModel({
     required this.detectionId,
     required this.imageUrl,
@@ -17,6 +18,7 @@ class SingleDetectionResponseModel {
     required this.taroNotEarly,
     required this.taroHealthy,
     this.userId,
+    required this.solution,
     required this.createdAt,
   });
 
@@ -28,6 +30,7 @@ class SingleDetectionResponseModel {
       taroNotEarly: json['not_early'],
       taroHealthy: json['healthy'],
       userId: json['user_id'],
+      solution: json['solution'],
       createdAt: DateFormat('yyyy-MM-dd HH:mm:ss')
           .format(DateTime.parse(json['created_at'])),
     );
@@ -41,6 +44,7 @@ class SingleDetectionResponseModel {
     data['not_early'] = taroNotEarly;
     data['healthy'] = taroHealthy;
     data['user_id'] = userId;
+    data['solution'] = solution;
     data['created_at'] = createdAt;
     return data;
   }
