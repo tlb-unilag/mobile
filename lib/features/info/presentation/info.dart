@@ -59,27 +59,32 @@ class DetectionInfoScreen extends ConsumerWidget {
                                   style: CustomTextStyle.label2XLXBold),
                             ),
                             CustomInfoWidget(
-                              color: Colors.grey.shade100,
+                              color: Colors.white,
                               labelText: "Early",
                               data: data.data!.taroEarly,
                             ),
                             CustomInfoWidget(
-                              color: Colors.white,
+                              color: Colors.grey.shade100,
                               labelText: "Not Early",
                               data: data.data!.taroNotEarly,
                             ),
                             CustomInfoWidget(
-                              color: Colors.grey.shade100,
+                              color: Colors.white,
                               labelText: "Healthy",
                               data: data.data!.taroHealthy,
                             ),
                             CustomInfoWidget(
-                              color: Colors.white,
+                              color: Colors.grey.shade100,
                               labelText: "Date",
                               data: DateTime.parse(data.data!.createdAt)
                                   .formatDateAndTime,
                             ),
                           ]),
+                       const CustomInfoWidget(
+                        color: Colors.white,
+                        labelText: "Solution",
+                        data:"",
+                      ),
                       SolutionWidget(
                           solutionText: data.data!.solution,
                           color: Colors.grey.shade100)
