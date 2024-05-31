@@ -131,7 +131,7 @@ class CloudinaryClient extends CloudinaryApi {
       var bytes = utf8.encode(stringParams.toString().trim());
       signature = sha1.convert(bytes).toString();
     } catch (e) {
-      print(e);
+      Dialogs.showErrorSnackbar(message: "A cloudinary error occurred , failed to upload : $e");
     }
     return signature;
   }

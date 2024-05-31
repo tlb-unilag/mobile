@@ -1,3 +1,4 @@
+import 'package:flutter/physics.dart';
 import 'package:taro_leaf_blight/features/detection/provider/detection_providers.dart';
 import 'package:taro_leaf_blight/features/error/presentation/error.dart';
 import 'package:taro_leaf_blight/features/recents/presentation/recents.dart';
@@ -36,7 +37,7 @@ class ViewAllScreen extends ConsumerWidget {
                                 detectionInfo: detectionInfo);
                           }).toList());
                         } else {
-                          return NoDetections();
+                          return const NoDetections();
                         }
                       },
                       loading: () {
