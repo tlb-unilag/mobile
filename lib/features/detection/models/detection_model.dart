@@ -9,7 +9,7 @@ class SingleDetectionResponseModel {
   int taroHealthy;
   String? userId;
   String createdAt;
-  String solution;
+  String? solution;
   
   SingleDetectionResponseModel({
     required this.detectionId,
@@ -18,7 +18,7 @@ class SingleDetectionResponseModel {
     required this.taroNotEarly,
     required this.taroHealthy,
     this.userId,
-    required this.solution,
+    this.solution,
     required this.createdAt,
   });
 

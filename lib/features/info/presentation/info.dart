@@ -85,8 +85,8 @@ class DetectionInfoScreen extends ConsumerWidget {
                         labelText: "Solution",
                         data:"",
                       ),
-                      SolutionWidget(
-                          solutionText: data.data!.solution,
+                      if (data.data?.solution != null) SolutionWidget(
+                          solutionText: data.data!.solution!,
                           color: Colors.grey.shade100)
                         ]
                       );

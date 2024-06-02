@@ -240,7 +240,6 @@ class UserDetails extends ConsumerWidget {
         );
       },
       error: (error, stacktrace) {
-        print(error);
         return Text.rich(
           TextSpan(
             children: [
